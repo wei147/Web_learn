@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hello world</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <div id="wei"></div>
+</body>
+<script>
+    // .mount("#root"); 的意思是在id为root上使用vue
+    Vue.createApp({
+        data() {
+            return {
+                content: 10
+            }
+        },
+        // mounted表示页面加载完成,我就会执行
+        mounted() {
+            // alert("hi");
+            setInterval(() => {
+                this.content += 1;
+            }, 1000);
+        },
+        // 以template 的内容作为显示
+        template: '<div>hello world ! {{content}}</div>'
+    }).mount("#wei");
+</script>
+
+</html>

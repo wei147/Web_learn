@@ -1,0 +1,8 @@
+.header {
+  width: 1000px;
+}
+@media screen and (min-width: 768px) {
+  .header {
+    width: 500px;
+  }
+}

@@ -1,0 +1,32 @@
+// mixin
+// 超出范围则显示省略号
+// @import 'mixin';
+
+// .text{
+//     @include singleline(700px);
+// }
+
+// .content-text{
+//     @include singleline(1000px);
+
+// }
+
+@mixin ipad {
+    @media screen and (min-width:768px){
+        @content;
+    }
+}
+
+.header{
+    width: 1000px;
+    @include ipad(){
+        width: 500px;
+    }
+}
+
+// .footer{
+//     color: green;
+//     @include ipad(){
+//         color: palevioletred;
+//     }
+// }

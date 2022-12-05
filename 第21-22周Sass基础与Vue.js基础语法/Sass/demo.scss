@@ -1,0 +1,52 @@
+// Sass是css语法的扩展。在这里可以写更简单的css语法
+// .body{
+//     span{
+//         color: aqua;
+//         &:active{
+//             color: green;
+//         }
+//         &:hover{
+//             color: yellow;
+//         }
+//     }
+// }
+// $small-font:14px+2px;
+// $text-color:#444;
+// $default-font:'miscrosoft yahei';
+
+// .title{
+//     color: $text-color;
+//     font-family: $default-font;
+// }
+
+// .subtitle{
+//     // 颜色变浅 20%
+//     color: lighten($text-color, 20%);
+// }
+
+// .text{
+//     // 颜色变深 20%
+//     color: darken($text-color, 20%);
+//     font-size: $small-font;
+// }
+
+// div span{
+//     color: red;
+
+// }
+
+// div span a{
+//     color: green;
+// }
+// div{
+//     span{
+//         color: red;
+//         a{
+//             color: green;
+//         }
+//     }
+// }
+@import 'viriable';
+@import 'header';
+@import 'content';
+
