@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 2</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <div id="wei"></div>
+</body>
+<!-- <script>
+    // .mount("#root"); 的意思是在id为root上使用vue
+    Vue.createApp({
+        data() {
+            return {
+                content: "铁马冰河入梦来"
+            }
+        },
+        methods: {
+            handleBtnClick() {
+                // 把字符串打散,再反转
+                const newContent = this.content.split('').reverse().join('');
+                this.content = newContent;
+            }
+        },
+        // 以template 的内容作为显示
+        template: `<div>
+            hello world ! 
+            <hr>
+            {{content}}
+            <button v-on:click="handleBtnClick">反转</button>
+            </div>`
+    }).mount("#wei");
+</script> -->
+
+<script>
+    Vue.createApp({
+        data() {
+            return {
+                content: "铁马冰河入梦来",
+                show: true
+            } },
+        methods: {
+            handleBtnClick() {
+                //显示与隐藏
+                this.show = !this.show;
+            }},
+        template: `<div>
+            <span v-if="show">铁马冰河入梦来 </span>
+            <hr>
+            <button v-on:click="handleBtnClick">显示/隐藏</button>
+            </div>`
+    }).mount("#wei");
+</script>
+</html>

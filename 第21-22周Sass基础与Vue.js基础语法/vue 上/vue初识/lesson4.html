@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 4</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <div id="wei"></div>
+</body>
+
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                inputValue: '',
+                list: ["chen", "yang", "lin", "guo"],
+                param: ''
+            }
+        },
+        methods: {
+            handleAddItem() {
+                if (this.inputValue != '') {
+                    this.list.push(this.inputValue);
+                    //因为是双向绑定的关系,这里设置inputValue为空,所以输入框的文字也被清除
+                    this.inputValue = '';
+                } else {
+                    alert("添加内容不能为空");
+                }
+            }
+        },
+        // v-model: input框输入的内容会和data里的inputValue变量绑定 (双向绑定的关系)
+        template: `
+        <div>
+            <input v-model="inputValue" />
+            <button v-on:click="handleAddItem"
+                    v-bind:title="inputValue"
+            >add</button>
+            <ul>
+                <li v-for="(item,index) of list">
+                    <span>{{index}}--{{item}}</span>
+                    </li>
+            </ul>
+            <hr>
+            <ul >
+                <todo-item v-for="(item,index) of list" 
+                v-bind:content="item"
+                v-bind:index="index"
+                />
+                </ul>
+        </div>
+        `
+    });
+
+    //注册组件
+    app.component('todo-item',{
+        props:['content','index'], //props会接收从外部传进来的'content'、'index'内容
+        template:'<li>{{index}} -- {{content}}</li>'
+    });
+
+    //要最后挂载mount,否则写在它之前的组件不生效
+    app.mount("#wei");
+</script>
+
+</html>

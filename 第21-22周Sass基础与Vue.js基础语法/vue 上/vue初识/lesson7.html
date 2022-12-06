@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 7</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="wei">
+        <h4>{{message}}</h4>
+    </div>
+</body>
+
+<script>
+    //生命周期函数: 在某一时刻会自动执行的函数
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '<h4>冰红茶</h4>',
+                disabled:false
+
+            }
+        },
+        methods: {},
+
+
+
+        //v-once 只渲染一次,当message发生变化时将不会跟随更新dom
+        template: '<h4 v-once>{{message}}</h4>'
+        //插值表达式 {{}} 内可以写js表达式
+        // template: '<h4>{{Math.max(1,8)}}</h4>'
+        // template: '<input v-bind:disabled="disabled"></input>'
+        // template: '<div v-bind:title="message">oppo</div>'
+        // template: '<div v-html="message">oppo</div>'
+    });
+
+    const vm = app.mount("#wei");
+</script>
+
+</html>

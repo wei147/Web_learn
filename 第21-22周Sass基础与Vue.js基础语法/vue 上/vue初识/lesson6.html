@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 6</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="wei">
+        <h4>{{message}}</h4>
+    </div>
+</body>
+
+<script>
+    //生命周期函数: 在某一时刻会自动执行的函数
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '冰红茶'
+            }
+        },
+        methods: {},
+        //在实例生成之前会自动执行的函数
+        beforeCreate() {
+            console.log("beforeCreate");
+        },
+        //在实例生成之后会自动执行的函数
+        created() {
+            console.log("created");
+        },
+        //在组件内容被渲染到页面之前自动执行的函数 (比如 template 模板)
+        beforeMount() {
+            console.log(document.getElementById('wei').innerHTML, "beforeMount");
+            console.log("beforeMount");
+        },
+        //在组件内容被渲染到页面之后自动执行的函数
+        mounted() {
+            console.log("mounted");
+            console.log(document.getElementById('wei').innerHTML, "mounted");
+        },
+
+        //当数据发生变化时会立即自动执行的函数
+        beforeUpdate() {
+            console.log(document.getElementById('wei').innerHTML, "beforeUpdate");
+        },
+        //当数据发生变化,页面重新渲染后,会自动执行的函数 (更新完成)
+        updated() {
+            console.log(document.getElementById('wei').innerHTML, "updated");
+        },
+        //当 Vue应用失效时,会自动执行的函数   (在控制台调用函数触发 app.unmount())
+        beforeUnmount() {
+            console.log(document.getElementById('wei').innerHTML,"beforeUnmount");
+        },
+        //当 Vue应用失效时,且dom完全销毁之后.会自动执行的函数   (在控制台调用函数触发 app.unmount())
+        unmounted() {
+            console.log(document.getElementById('wei').innerHTML,"unmounted");
+        },
+        template: ''
+    });
+
+    const vm = app.mount("#wei");
+</script>
+
+</html>

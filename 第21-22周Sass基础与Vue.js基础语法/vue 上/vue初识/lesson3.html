@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 3</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <div id="wei"></div>
+</body>
+
+<script>
+    Vue.createApp({
+        data() {
+            return {
+                inputValue: '',
+                list: ["chen", "yang", "lin", "guo"]
+            }
+        },
+        methods: {
+            handleAddItem() {
+                this.list.push(this.inputValue);
+                //因为是双向绑定的关系,这里设置inputValue为空,所以输入框的文字也被清除
+                this.inputValue=''
+            }
+        },
+        // v-model: input框输入的内容会和data里的inputValue变量绑定 (双向绑定的关系)
+        template: `
+        <div>
+            <input v-model="inputValue" />
+            <button v-on:click="handleAddItem">add</button>
+            <ul>
+                <li v-for="(item,index) of list">{{index}}.{{item}}</li>
+            </ul>
+        </div>
+        `
+    }).mount("#wei");
+</script>
+
+</html>
