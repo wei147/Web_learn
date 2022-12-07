@@ -12,6 +12,7 @@
 <body>
     <div id="wei">
         <h4>{{message}}</h4>
+        <!--  -->
     </div>
 </body>
 
@@ -20,17 +21,31 @@
     const app = Vue.createApp({
         data() {
             return {
-                message: '<h4>冰红茶</h4>',
-                disabled:false
+                message: '<h4>冰红茶 6.99</h4>',
+                disabled:false,
+                name:'title',
+                event:'mouseenter'
 
             }
         },
-        methods: {},
+        methods: {
+            handleClick(){
+                //阻止默认行为。无法跳转到百度
+                // e.preventDefault(); 这个可以加到@click后  @click.prevent
+                alert('hi');
+            
+            }
+        },
 
 
 
+        template: `<form action="https://www.baidu.com" @click.prevent="handleClick">
+                    <button type="submit">提交</button>
+            </form>`
+        // <h4 @click="handleClick">{{message}}</h4>  <!--v-on:click 等价于 @click。 v-bind: 等价于 :-->
+        // template: '<h4 @[event]="handleClick" v-bind:[name]="message">{{message}}</h4>'
         //v-once 只渲染一次,当message发生变化时将不会跟随更新dom
-        template: '<h4 v-once>{{message}}</h4>'
+        // template: '<h4 v-once>{{message}}</h4>'
         //插值表达式 {{}} 内可以写js表达式
         // template: '<h4>{{Math.max(1,8)}}</h4>'
         // template: '<input v-bind:disabled="disabled"></input>'

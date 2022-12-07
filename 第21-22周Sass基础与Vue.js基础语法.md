@@ -560,3 +560,100 @@ v-model
 </html>
 ```
 
+#### vue指令的简写
+
+```vue
+<!--点击事件-->
+<h4 v-on:click="handleClick">{{message}}</h4>  
+<h4 @click="handleClick">{{message}}</h4>  <!--等价于-->
+
+<!--绑定属性-->
+<h4 v-bind:title="message">{{message}}</h4>  
+<h4 :title="message">{{message}}</h4>  <!--等价于-->
+```
+
+```javascript
+        data() {
+            return {
+                message: '<h4>冰红茶 6.99</h4>',
+                disabled:false,
+                name:'title',
+                event:'mouseenter'}},
+        methods: {
+            handleClick(){
+                //阻止默认行为。无法跳转到百度
+                // e.preventDefault(); 这个可以加到@click后  @click.prevent
+                alert('hi');
+            }},
+        template: `<form action="https://www.baidu.com" @click.prevent="handleClick">
+                    <button type="submit">提交</button>
+            </form>`
+        // <h4 @click="handleClick">{{message}}</h4>  <!--v-on:click 等价于 @click。 v-bind: 等价于 :-->
+```
+
+
+
+#### 计算属性computed和方法methods
+
+```vue
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 8</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="wei">
+        <h4>{{message}}</h4>
+    </div>
+</body>
+
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '冰红茶 yooo',
+                count:3,
+                price:9,
+            }
+        },
+        // computed和methods更高效,有缓存机制。建议用前者
+        computed:{
+             //当计算属性依赖的内容发生变更时,才会重新执行计算 (this.price发生改变才会变)
+            total(){
+                // return this.count*this.price
+                return Date.now()+this.price;
+            }
+        },
+        methods: {
+            handleClick(){
+                alert('hi');
+                console.log(this.message);
+            },
+
+            formatString(string){
+                return string.toUpperCase();
+            },
+             //只要页面重新渲染,才会重新计算
+            getTotal(){
+                // return this.count*this.price
+                return Date.now()
+            }
+        },
+
+        //{{total}}是从计算属性那拿到的
+        template: `<h5>total: {{total}}</h5>
+        <hr>
+        <h6>getTotal: {{getTotal()}}</h6>
+        <div @click="handleClick">
+              {{formatString(message)}}
+            </div>`
+    });
+    const vm = app.mount("#wei");
+</script>
+</html>
+```
+
