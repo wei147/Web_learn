@@ -657,3 +657,143 @@ v-model
 </html>
 ```
 
+#### watch 监听器
+
+```vue
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 9</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="wei">
+        <h4>{{message}}</h4>
+    </div>
+</body>
+
+<script>
+    //data & methods & computed & watcher
+    //computed 和 method 都能实现的一个功能,建议使用 computed,因为有缓存
+    //computed 和 watcher 都能实现的功能,建议使用computed 因为更加简洁
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '冰红茶 yooo',
+                tip:"vm.$data.price=80",
+                count:3,
+                price:9,
+                newTotal:27,
+            }
+        },
+        //监听器 (通过watch可以监听上面data定义的变量的改变,去做一些异步的操作)
+        watch:{
+            //price 发生变化时,函数会执行
+            price(current,prev){ //变化前的值 和 变化后的值
+                console.log(current,prev);
+                this.newTotal = current*this.count;
+                // setTimeout(() => {
+                //     alert("2秒后")
+                // }, 2000);
+            }
+        },
+        computed:{
+             //当计算属性依赖的内容发生变更时,才会重新执行计算 (this.price发生改变才会变)
+            total(){
+                // return this.count*this.price
+                return Date.now()+this.price;
+            }
+        },
+        },
+        //{{total}}是从计算属性那拿到的
+        template: `
+        <hr>
+        <h6>{{newTotal}}</h6>
+            <hr>
+            <h6>{{tip}}</h6>`
+    });
+    const vm = app.mount("#wei");
+</script>
+</html>
+```
+
+
+
+#### vue的css样式
+
+```html
+//错误的写法, :style="styleObject" 直接这样写是拿不到styleObject的值的,要通过props
+<!--Property "styleObject" was accessed during render but is not defined on instance. -->
+app.component('demo',{
+        // :class="$attrs.class" 获取上面传进来的class属性
+        template: `
+            <h6 :class="$attrs.class">single</h6>
+            <h6 :style="styleObject">min</h6>`
+    })
+```
+
+```vue
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 9-1</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="wei">
+        <h4 class="red">{{message}}</h4>
+    </div>
+</body>
+<style>
+    .green{
+        color: green;}
+    .red{
+        color: red;}
+</style>
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '冰红茶 yooo',
+                tip:"vm.$data.color='green'",
+                color:"red",
+                //对象的形式  true|false 表示要不要进行展示
+                colorObject:{red:false, green:true},
+                //数组的形式
+                colorArray:['red','green',{brwon:true}],
+                styleString:'color: aqua;',
+                styleObject:{
+                    color:'aqua'
+                }}},
+
+        methods: {
+        },
+        template: `
+        <div :class="color">
+            <h6>{{tip}}</h6>
+            <hr>
+            <h6 :style="styleObject">{{message}}</h6>
+            <hr>
+            <!--调用子组件 demo -->
+            <demo class="green"/>
+
+            </div>
+            `
+    });
+    app.component('demo',{
+        // :class="$attrs.class" 获取上面传进来的class属性
+        template: `
+            <h6 :class="$attrs.class">single</h6>
+            <h6>min</h6>`
+    })
+    const vm = app.mount("#wei");
+</script>
+</html>
+```
+

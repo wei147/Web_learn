@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 9-1</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="wei">
+        <h4 class="red">{{message}}</h4>
+    </div>
+</body>
+<style>
+    .green{
+        color: green;
+    }
+
+    .red{
+        color: red;
+    }
+</style>
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '冰红茶 yooo',
+                tip:"vm.$data.color='green'",
+                color:"red",
+                //对象的形式  true|false 表示要不要进行展示
+                colorObject:{red:false, green:true},
+                //数组的形式
+                colorArray:['red','green',{brwon:true}],
+                styleString:'color: aqua;',
+                styleObject:{
+                    color:'aqua'
+                }
+            }
+        },
+
+        methods: {
+        },
+        template: `
+        <div :class="color">
+            <h6>{{tip}}</h6>
+            <hr>
+            <h6 :style="styleObject">{{message}}</h6>
+            <hr>
+            <!--调用子组件 demo -->
+            <demo class="green"/>
+
+            </div>
+            `
+    });
+    app.component('demo',{
+        // :class="$attrs.class" 获取上面传进来的class属性
+        template: `
+            <h6 :class="$attrs.class">single</h6>
+            <h6>min</h6>`
+    })
+
+    const vm = app.mount("#wei");
+</script>
+
+</html>
