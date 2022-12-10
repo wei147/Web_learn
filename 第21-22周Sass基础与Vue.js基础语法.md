@@ -797,3 +797,23 @@ app.component('demo',{
 </html>
 ```
 
+#### Vue的条件渲染
+
+<img src="C:\Users\w1216\AppData\Roaming\Typora\typora-user-images\image-20221210235052010.png" alt="image-20221210235052010" style="zoom:90%;" />
+
+```vue
+        template: `
+        <div v-if="show">
+              {{message}}
+            </div>
+        <hr>
+        <div v-show="show">
+              {{message}}
+            </div>
+            `
+v-if是通过控制这个元素在dom上的存在与否,来控制它的展示和隐藏。
+v-show是通过style样式来控制的
+
+频繁改变dom元素的显示与否,建议使用v-show (不会频繁销毁dom,性能会比较好)
+```
+

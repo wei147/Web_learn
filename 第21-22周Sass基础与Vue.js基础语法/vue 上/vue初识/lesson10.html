@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 9</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="wei">
+        <h4>{{message}}</h4>
+    </div>
+</body>
+
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '冰红茶 yooo',
+                show:false
+            }
+        },
+        methods: {
+        },
+
+        template: `
+        <div v-if="show">
+              {{message}}
+            </div>
+        <hr>
+        <div v-show="show">
+              {{message}}
+            </div>
+            `
+    });
+
+    const vm = app.mount("#wei");
+</script>
+
+</html>
