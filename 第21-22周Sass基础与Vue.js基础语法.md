@@ -817,3 +817,22 @@ v-show是通过style样式来控制的
 频繁改变dom元素的显示与否,建议使用v-show (不会频繁销毁dom,性能会比较好)
 ```
 
+```vue
+if 和 else要贴着写
+
+        template: `
+        <div v-if="show">
+              hello
+            </div>
+        <hr>
+        <div v-else-if="conditionTwo">
+              hi
+            </div>
+        <hr>
+        <div v-else>
+              hi
+            </div>
+        <hr>
+            `
+```
+

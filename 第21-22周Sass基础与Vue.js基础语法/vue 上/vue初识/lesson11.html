@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 11</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="wei">
+        <h4>{{message}}</h4>
+    </div>
+</body>
+
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '冰红茶 yooo',
+                listArray: ["yang", "chen", "wei"],
+                listObiect:{
+                    "name":"liu",
+                    "sex":"man",
+                    "age":25
+                }
+            }
+        },
+        methods: {
+            handleAdd(){
+                // 数组的变更函数
+                // this.listArray.push("hi")
+                this.listArray.pop()
+            },
+        },
+
+        // 这里的key值尽量用唯一的东西。这样vue就知道这个元素要不要复用
+        // 当使用vue做循环的时候,循环的每一项尽量的给唯一的key值,这样会有效的提升vue的性能
+        template: `
+        <div v-for="(item,index) in listArray" :key="item">
+              {{index}}.{{item}}
+            </div>
+            <button @click="handleAdd">添加</button>
+        <hr>
+        <div v-for="(value,key,index) in listObiect">
+              {{index}} -- {{key}} -- {{value}}
+            </div>
+            `
+    });
+
+    const vm = app.mount("#wei");
+</script>
+
+</html>
