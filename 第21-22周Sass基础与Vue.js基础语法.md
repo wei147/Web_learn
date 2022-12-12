@@ -836,3 +836,229 @@ if 和 else要贴着写
             `
 ```
 
+
+
+#### vue的listArray、listObject遍历以及数组操作
+
+```vue
+知识点有些多:
+1.数组、对象数组的遍历
+2. 数组的变更函数
+3.直接替换数组
+4.直接更新数组的内容
+5.直接添加对象的内容,也可以自动的展示出来
+6.template标签的使用。(不会渲染到页面上)
+
+一些注意项
+        // 这里的key值尽量用唯一的东西。这样vue就知道这个元素要不要复用
+        // 当使用vue做循环的时候,循环的每一项尽量的给唯一的key值,这样会有效的提升vue的性能
+        // 在for循环里面用if判断(在同一个标签内)。for的优先级是比if高的,直接写if是不生效的。可以在显示item/value上的div包裹作判断
+        // <template 这里的template标签是一个占位符并不会实际渲染到页面上（可以少一个层级这样子?）
+```
+
+
+
+```vue
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 11</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="wei">
+        <h4>{{message}}</h4>
+    </div>
+</body>
+
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '冰红茶 yooo',
+                listArray: ["yang", "chen", "wei"],
+                listObiect: {
+                    "name": "liu",
+                    "sex": "man",
+                    "age": 25
+                }
+            }
+        },
+        methods: {
+            handleAdd() {
+                // 1.数组的变更函数 push pop shift unshift splice sort reverse
+                // this.listArray.push("hi")
+                // this.listArray.pop() 每次从数组里面减少一个
+                // this.listArray.shift() //shift 从数组最前面开始减少
+                // this.listArray.unshift("hi") //shift 从数组最前面开始增加
+                // this.listArray.reverse() //reverse 从数组反向
+
+                // 2.直接替换数组
+                // this.listArray=["万古人间四月天","铁马冰河入梦来"]
+                // this.listArray=["万古人间四月天"].concat(["铁马冰河入梦来"]);
+                // 过滤操作
+                // this.listArray = ["yong", "wa"].filter(item => item === "wa");
+
+                // 3.直接更新数组的内容
+                this.listArray[0] = "hei";
+            },
+            handleAddObj() {
+                // 1.直接添加对象的内容,也可以自动的展示出来
+                this.listObiect.age = 30
+            }
+        },
+
+        // 这里的key值尽量用唯一的东西。这样vue就知道这个元素要不要复用
+        // 当使用vue做循环的时候,循环的每一项尽量的给唯一的key值,这样会有效的提升vue的性能
+        // 在for循环里面用if判断(在同一个标签内)。for的优先级是比if高的,直接写if是不生效的。可以在显示item/value上的div包裹作判断
+        // <template 这里的template标签是一个占位符并不会实际渲染到页面上（可以少一个层级这样子?）
+        template: `
+        <div>
+        <template v-for="(item,index) in listArray" :key="item" >
+            <div  v-if="item !=='chen'">
+                {{index}}.{{item}}
+                </div>
+            </template>
+        </div>
+            <button @click="handleAdd">添加</button>
+        <hr>
+        <div v-for="(value,key,index) in listObiect" :key="value">
+              {{index}} -- {{key}} -- {{value}}
+            </div>
+            <button @click="handleAddObj">修改obj</button>
+
+            <hr>
+            <div v-for="item in 10">
+              {{item}}
+            </div>
+            `
+    });
+    const vm = app.mount("#wei");
+</script>
+
+</html>
+```
+
+
+
+#### Vue事件修饰符
+
+```vue
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 12</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="wei">
+        <h4>{{message}}</h4>
+    </div>
+</body>
+
+<script>
+    // 事件修饰符:stop,prevent,capture,self,once,passive
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '冰红茶 yooo',
+                counter: 0
+            }
+        },
+        methods: {
+            //接收event事件
+            handleBtnClick(num, event) {
+                // console.log(event);
+                // console.log(event.target);
+                // this.counter = this.counter + num;
+                // this.counter += 1;
+                this.counter = this.counter+1
+                // alert(1)
+            },
+            handleBtnClick1(event) {
+                // alert(2)
+            },
+            handleDivClick(event) {
+                alert("这是div")
+            }
+        },
+        template: `
+        <hr>
+        <div @click.once="handleDivClick()">
+            // <a href="www.baidu.com">百度</a>
+            <h4>{{counter}}</h4>
+        <button @click="handleBtnClick(2,$event),handleBtnClick1()">点击</button>
+        </div>
+            `
+        // <button @click="counter +=1">点击</button> 也可以直接这样写。实现counter+1
+        // 如果我们要额外传递参数同时要要获取到原生的事件对象的话,可以这样写  @click="handleBtnClick(2,$event)
+        //点击事件的冒泡。点击div里面的btn,btn会先做出响应,然后会冒泡到div
+        //怎么停止冒泡? @click.stop停止向外做事件的冒泡
+        // @click.self 会做一个判断。只有点击到自己的时候,才会触发(必须是点击到自己的这个dom标签才会触发,子标签触发的dom事件不会执行),
+        //@click.prevent 阻止默认行为。加上之后,比如a标签的跳转就不支持了
+        //@click.capture 把事件的运营模式变成捕获(默认是冒泡,冒泡是由内到外,捕获时从外到内)
+        //@click.once只执行一次函数
+    });
+    const vm = app.mount("#wei");
+</script>
+</html>
+```
+
+#### Vue的按键修饰符和鼠标修饰符
+
+```vue
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 12-1</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="wei">
+        <h4>{{message}}</h4>
+    </div>
+</body>
+
+<script>
+    //按键修饰符
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '冰红茶 yooo',
+                counter: 0
+            }
+        },
+        methods: {
+            handleKeyDown(evevnt) {
+                console.log("hi hi");
+            },
+        },
+        // @keydown 是直接就获取输入框中的内容了
+        //@keydown.enter 是回车之后才获取 类似的键 enter,tab,delete,esc,up,right
+        // 鼠标修饰符: left，right,middle
+        //精确修饰符: exact 精确到某个按键  @click.ctrl.exact (本来按住ctrl键加任意键才会触发),下现在是按住ctrl键就会触发
+        template: `
+            <input @keydown.enter="handleKeyDown" />
+            <hr>
+            <h4 @click.ctrl.exact="handleKeyDown">message</h4>
+            `
+    });
+    const vm = app.mount("#wei");
+</script>
+
+</html>
+```
+

@@ -21,35 +21,62 @@
             return {
                 message: '冰红茶 yooo',
                 listArray: ["yang", "chen", "wei"],
-                listObiect:{
-                    "name":"liu",
-                    "sex":"man",
-                    "age":25
+                listObiect: {
+                    "name": "liu",
+                    "sex": "man",
+                    "age": 25
                 }
             }
         },
         methods: {
-            handleAdd(){
-                // 数组的变更函数
+            handleAdd() {
+                // 1.数组的变更函数 push pop shift unshift splice sort reverse
                 // this.listArray.push("hi")
-                this.listArray.pop()
+                // this.listArray.pop() 每次从数组里面减少一个
+                // this.listArray.shift() //shift 从数组最前面开始减少
+                // this.listArray.unshift("hi") //shift 从数组最前面开始增加
+                // this.listArray.reverse() //reverse 从数组反向
+
+                // 2.直接替换数组
+                // this.listArray=["万古人间四月天","铁马冰河入梦来"]
+                // this.listArray=["万古人间四月天"].concat(["铁马冰河入梦来"]);
+                // 过滤操作
+                // this.listArray = ["yong", "wa"].filter(item => item === "wa");
+
+                // 3.直接更新数组的内容
+                this.listArray[0] = "hei";
             },
+            handleAddObj() {
+                // 1.直接添加对象的内容,也可以自动的展示出来
+                this.listObiect.age = 30
+            }
         },
 
         // 这里的key值尽量用唯一的东西。这样vue就知道这个元素要不要复用
         // 当使用vue做循环的时候,循环的每一项尽量的给唯一的key值,这样会有效的提升vue的性能
+        // 在for循环里面用if判断(在同一个标签内)。for的优先级是比if高的,直接写if是不生效的。可以在显示item/value上的div包裹作判断
+        // <template 这里的template标签是一个占位符并不会实际渲染到页面上（可以少一个层级这样子?）
         template: `
-        <div v-for="(item,index) in listArray" :key="item">
-              {{index}}.{{item}}
-            </div>
+        <div>
+        <template v-for="(item,index) in listArray" :key="item" >
+            <div  v-if="item !=='chen'">
+                {{index}}.{{item}}
+                </div>
+            </template>
+        </div>
             <button @click="handleAdd">添加</button>
         <hr>
-        <div v-for="(value,key,index) in listObiect">
+        <div v-for="(value,key,index) in listObiect" :key="value">
               {{index}} -- {{key}} -- {{value}}
+            </div>
+            <button @click="handleAddObj">修改obj</button>
+
+            <hr>
+            <div v-for="item in 10">
+              {{item}}
             </div>
             `
     });
-
     const vm = app.mount("#wei");
 </script>
 
