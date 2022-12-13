@@ -1062,3 +1062,35 @@ if 和 else要贴着写
 </html>
 ```
 
+
+
+#### vue的双向绑定
+
+```js
+ // input、textare、checkbox、radio
+    const app = Vue.createApp({
+        data() {
+            return {
+
+                // message:true //如果双向绑定的是 checkbox,message的值必须是true或者false
+                // message:[] //涉及到是存储checkbox value值的时候可以是一个数组
+                message:'' //如果radio的话,因为是单选,这里初始值设置为空字符就行
+                // message: '冰红茶 yooo',
+            }},
+        // message的值变化了,input框的内容变化了。反过来也一样这就是双向绑定,,,
+        template: `
+        <h4>{{message}}</h4>
+        <hr>
+        不辣 <input type="radio" v-model="message" value="不辣"/>
+        微辣 <input type="radio" v-model="message" value="微辣"/>
+        中辣 <input type="radio" v-model="message" value="中辣"/>
+            `
+            // <input v-model="message" />
+            // <textare v-model="message" />
+            // 不辣 <input type="checkbox" v-model="message" value="不辣"/>
+            // 微辣 <input type="checkbox" v-model="message" value="微辣"/>
+            // 中辣 <input type="checkbox" v-model="message" value="中辣"/>
+    });
+    const vm = app.mount("#wei");
+```
+

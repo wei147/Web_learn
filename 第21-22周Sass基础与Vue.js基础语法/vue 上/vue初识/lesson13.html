@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 12</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="wei">
+    </div>
+</body>
+
+<script>
+    // input、textare、checkbox、radio
+    const app = Vue.createApp({
+        data() {
+            return {
+
+                // message:true //如果双向绑定的是 checkbox,message的值必须是true或者false
+                // message:[] //涉及到是存储checkbox value值的时候可以是一个数组
+                message:'' //如果radio的话,因为是单选,这里初始值设置为空字符就行
+                // message: '冰红茶 yooo',
+            }
+        },
+        methods: {
+            handleKeyDown(evevnt) {
+                console.log("hi hi");
+            },
+        },
+
+        // message的值变化了,input框的内容变化了。反过来也一样这就是双向绑定,,,
+        template: `
+        <h4>{{message}}</h4>
+        <hr>
+        不辣 <input type="radio" v-model="message" value="不辣"/>
+        微辣 <input type="radio" v-model="message" value="微辣"/>
+        中辣 <input type="radio" v-model="message" value="中辣"/>
+            `
+            // <input v-model="message" />
+            // <textare v-model="message" />
+            // 不辣 <input type="checkbox" v-model="message" value="不辣"/>
+            // 微辣 <input type="checkbox" v-model="message" value="微辣"/>
+            // 中辣 <input type="checkbox" v-model="message" value="中辣"/>
+    });
+    const vm = app.mount("#wei");
+</script>
+
+</html>
