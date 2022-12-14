@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 13</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="wei">
+    </div>
+</body>
+
+<script>
+    // input、textare、checkbox、radio、select
+    //修饰符 <input v-model.lazy="text" />不会立刻同步绑定的值(输入框失去焦点的时候才会变化)
+            //v-model.number 可以做数字类型的转换
+            // trim 去除字符前后的空格,再存储到绑定的数据上
+    const app = Vue.createApp({
+        data() {
+            return {
+
+                // message:true //如果双向绑定的是 checkbox,message的值必须是true或者false
+                // message:[] //涉及到是存储checkbox value值的时候可以是一个数组
+                // message:'' //如果radio的话,因为是单选,这里初始值设置为空字符就行
+                // message: '冰红茶 yooo',
+                // message:"",//如果是select的话可以给一个默认值 message:"A",
+                options:[{
+                    // option遍历这里的数据。 这样写的好处是 展示给用户看单纯是ABC,存储进去的可以是{value:'A'}
+                    text:'A',value:{value:'A'},
+                },
+                {
+                    text:'B',value:{value:'B'},
+                },
+                {
+                    text:'C',value:{value:'C'},
+                }
+            ],
+                //checkbox当没选中的时候显示false。选中时显示Yes,取消选中时显示No
+                message:false,
+                text:'hi'
+
+            }
+        },
+        methods: {
+            handleKeyDown(evevnt) {
+                console.log("hi hi");
+            },
+        },
+
+        // message的值变化了,input框的内容变化了。反过来也一样这就是双向绑定,,,
+        template: `
+        <h4>{{typeof text}}</h4> <h4>{{text}}</h4>
+        <hr>
+        <input type="checkbox" v-model="message" true-value="Yes" false-value="No"/>
+        <hr>
+        <input v-model.trim="text" />
+            `
+            // <input v-model="message" />
+            // <textare v-model="message" />
+            // 不辣 <input type="checkbox" v-model="message" value="不辣"/>
+            // 微辣 <input type="checkbox" v-model="message" value="微辣"/>
+            // 中辣 <input type="checkbox" v-model="message" value="中辣"/>
+
+            // 不辣 <input type="radio" v-model="message" value="不辣"/>
+            // 微辣 <input type="radio" v-model="message" value="微辣"/>
+            // 中辣 <input type="radio" v-model="message" value="中辣"/>
+
+            // <select v-model="message">
+            // <option disabled value=''>请选择</option>
+            // <option>A</option>
+            // <option>B</option>
+            // <option>C</option></select>
+
+            //     <select v-model="message">
+            //     <option disabled value=''>请选择</option>
+            //     <option v-for="(item,index) in options" :key="item"
+            //      :value="item.value">{{item.text}}</option>
+            // </select>
+
+            //<input type="num" v-model.lazy="text" />
+
+            //<input type="number" v-model.number="text" />
+    });
+    const vm = app.mount("#wei");
+</script>
+
+</html>

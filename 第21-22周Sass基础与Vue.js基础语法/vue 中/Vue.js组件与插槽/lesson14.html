@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 14</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="wei">
+    </div>
+</body>
+
+<script>
+    // 这里是创建一个vue的实例。vue的应用。
+    //但是在创建应用的时候,它会接收一个参数,而这个参数会决定vue的根组件怎么去渲染。
+    //组件具备复用性而且相互独立,互不影响(组件里的数据是被当前这个组件独享的)
+    //全局组件,只要定义了,处处可以使用,性能不高,但是使用起来简单
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '冰红茶 yooo',
+            }
+        },
+        methods: {
+            handleKeyDown(evevnt) {
+                console.log("hi hi");
+            },
+        },
+        template: `
+        <div>
+            <counter-parent/>
+            <counter/>
+            <counter/>
+        <hr>
+        <goods/>
+        </div>
+            `,
+
+
+    });
+    //组件里嵌套了一个组件
+    app.component('counter-parent', {
+        template: `<counter/>`
+    })
+    //定义组件 通过 <counter/> 即可引用
+    app.component('counter', {
+        data() {
+            return {
+                counter:1
+            }
+        },
+        template: `<h4 @click='counter += 1'>{{counter}}</h4>`
+    })
+    app.component('price', {
+        template: "<h4>5.99￥</h4>"
+    })
+    app.component('goods', {
+        template: "<h4>message</h4>"
+    })
+    const vm = app.mount("#wei");
+</script>
+
+</html>

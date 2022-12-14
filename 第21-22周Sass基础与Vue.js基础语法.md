@@ -409,7 +409,7 @@ v-model
 </html>
 ```
 
-
+### 第二章Vue.js基础语法、生命周期与事件
 
 #### Vue的mvvm设计模式
 
@@ -1067,30 +1067,128 @@ if 和 else要贴着写
 #### vue的双向绑定
 
 ```js
- // input、textare、checkbox、radio
+ // input、textare、checkbox、radio、select
+    //修饰符 <input v-model.lazy="text" />不会立刻同步绑定的值(输入框失去焦点的时候才会变化)
+            //v-model.number 可以做数字类型的转换
+            // trim 去除字符前后的空格,再存储到绑定的数据上
     const app = Vue.createApp({
         data() {
             return {
-
                 // message:true //如果双向绑定的是 checkbox,message的值必须是true或者false
                 // message:[] //涉及到是存储checkbox value值的时候可以是一个数组
-                message:'' //如果radio的话,因为是单选,这里初始值设置为空字符就行
+                // message:'' //如果radio的话,因为是单选,这里初始值设置为空字符就行
                 // message: '冰红茶 yooo',
-            }},
+                // message:"",//如果是select的话可以给一个默认值 message:"A",
+                options:[{
+                    // option遍历这里的数据。 这样写的好处是 展示给用户看单纯是ABC,存储进去的可以是{value:'A'}
+                    text:'A',value:{value:'A'},
+                },
+                {
+                    text:'B',value:{value:'B'},
+                },
+                {
+                    text:'C',value:{value:'C'},
+                }
+            ],
+                //checkbox当没选中的时候显示false。选中时显示Yes,取消选中时显示No
+                message:false,
+                text:'hi'
+            }
+        },
+
         // message的值变化了,input框的内容变化了。反过来也一样这就是双向绑定,,,
         template: `
-        <h4>{{message}}</h4>
+        <h4>{{typeof text}}</h4> <h4>{{text}}</h4>
         <hr>
-        不辣 <input type="radio" v-model="message" value="不辣"/>
-        微辣 <input type="radio" v-model="message" value="微辣"/>
-        中辣 <input type="radio" v-model="message" value="中辣"/>
+        <input type="checkbox" v-model="message" true-value="Yes" false-value="No"/>
+        <hr>
+        <input v-model.trim="text" />
             `
             // <input v-model="message" />
             // <textare v-model="message" />
             // 不辣 <input type="checkbox" v-model="message" value="不辣"/>
             // 微辣 <input type="checkbox" v-model="message" value="微辣"/>
             // 中辣 <input type="checkbox" v-model="message" value="中辣"/>
+
+            // 不辣 <input type="radio" v-model="message" value="不辣"/>
+            // 微辣 <input type="radio" v-model="message" value="微辣"/>
+            // 中辣 <input type="radio" v-model="message" value="中辣"/>
+
+            // <select v-model="message">
+            // <option disabled value=''>请选择</option>
+            // <option>A</option>
+            // <option>B</option>
+            // <option>C</option></select>
+
+            //     <select v-model="message">
+            //     <option disabled value=''>请选择</option>
+            //     <option v-for="(item,index) in options" :key="item"
+            //      :value="item.value">{{item.text}}</option>
+            // </select>
+
+            //<input type="num" v-model.lazy="text" />
+
+            //<input type="number" v-model.number="text" />
     });
+    const vm = app.mount("#wei");
+```
+
+
+
+## vue基础入门(中)
+
+### 第1章Vue.js组件与插槽
+
+#### 组件的概念
+
+<img src="C:\Users\w1216\AppData\Roaming\Typora\typora-user-images\image-20221214010159329.png" alt="image-20221214010159329" style="zoom:50%;" />
+
+```
+组件:页面的一部分
+```
+
+##### 全局组件
+
+```vue
+<script>
+    // 这里是创建一个vue的实例。vue的应用。
+    //但是在创建应用的时候,它会接收一个参数,而这个参数会决定vue的根组件怎么去渲染。
+    //组件具备复用性而且相互独立,互不影响(组件里的数据是被当前这个组件独享的)
+    //全局组件,只要定义了,处处可以使用,性能不高,但是使用起来简单
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '冰红茶 yooo',
+            }
+        },
+        template: `
+        <div>
+            <counter-parent/>
+            <counter/>
+            <counter/>
+        <hr>
+        <goods/>
+        </div> `,
+    });
+    //组件里嵌套了一个组件
+    app.component('counter-parent', {
+        template: `<counter/>`
+    })
+    //定义组件 通过 <counter/> 即可引用
+    app.component('counter', {
+        data() {
+            return {
+                counter:1
+            }
+        },
+        template: `<h4 @click='counter += 1'>{{counter}}</h4>`
+    })
+    app.component('price', {
+        template: "<h4>5.99￥</h4>"
+    })
+    app.component('goods', {
+        template: "<h4>message</h4>"
+    })
     const vm = app.mount("#wei");
 ```
 
