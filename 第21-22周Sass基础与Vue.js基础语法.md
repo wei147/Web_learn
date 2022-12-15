@@ -1192,3 +1192,55 @@ if 和 else要贴着写
     const vm = app.mount("#wei");
 ```
 
+
+
+#### 局部组件
+
+```vue
+<body>
+    <div id="wei">
+    </div>
+</body>
+<script>
+
+    //局部组件 注册后才能使用
+    const counter10 = {
+        data() {
+            return {
+                counter:1
+            }},
+        template: `<h4 @click='counter += 1'>{{counter}}</h4>`
+    }
+
+      //局部组件
+    const HelloWorld = {
+        data() {
+            return {
+                text:'橙子'
+            }},
+        template: `<h4>{{text}}</h4>`
+    }
+    // 这里是创建一个vue的实例。vue的应用。
+    //但是在创建应用的时候,它会接收一个参数,而这个参数会决定vue的根组件怎么去渲染。
+    //组件具备复用性而且相互独立,互不影响(组件里的数据是被当前这个组件独享的)
+    //全局组件,只要定义了,处处可以使用,性能不高,但是使用起来简单,名字建议 小写字母单词,中间有横线间隔
+    //局部组件,定义了要注册之后才能使用,性能比较高,使用起来有些麻烦,建议大写字母开头,驼峰命名
+    //局部组件使用时,要做一个名字和组件间的映射对象,不写映射,Vue底层也会自动尝试帮你做映射,,
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '冰红茶 yooo',
+            }},
+        components:{
+            counter10,HelloWorld
+        },
+        template: `
+        <div>
+            <counter10 />
+            <HelloWorld />
+        </div>
+            `,});
+    const vm = app.mount("#wei");
+</script>
+```
+
