@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 15</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="wei">
+    </div>
+</body>
+
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '冰红茶 yooo',
+                // number:"10086"
+                //传给子组件的甚至可以是一个函数
+                // number:()=>{alert(10086)}
+                number:10086
+            }
+        },
+        // <test content="hi hi "/> 把数据通过属性的形式传递给test组件。组件可以通过props接收
+        //组件的动态属性(传参)。通过v-bind绑定传递给组件的属性值,有data里面的数据决定组件的内容
+        template: `
+        <div>
+            <h4>{{message}}</h4>
+        <hr>
+        <test v-bind:content="number"/>
+        </div>
+            `,
+
+    });
+    //type:String,Boolean,Array,Object,Function,Symbol
+    //required 必填
+    //default 默认值,,
+    //validator 检验传进来的值
+    app.component("test",{
+        // 子组件可以对父组件传进来的参数做一个校验。这里父组件传进来的必须是一个String类型
+        props:{
+            // 'content':Function,
+            content:{
+                type:Number,
+                // required:true
+                // default:9000
+                validator:function(value){
+                    return value<100000;
+                },
+                default:()=>{
+                    return 9000
+                }
+            }
+        },
+        methods: {
+            handleClick(){
+                alert("hi"),
+                this.content()
+            }
+        },
+        template:`<h4 @click="handleClick">{{content}}here is Test</h4>
+        <hr>
+        <h4>{{content}}here is Test</h4>
+        {{typeof content}}
+        `
+    })
+    const vm = app.mount("#wei");
+</script>
+
+</html>
