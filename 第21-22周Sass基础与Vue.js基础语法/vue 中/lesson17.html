@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 17</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="wei">
+    </div>
+</body>
+
+<script>
+    // Non-prop 属性 就是说父组件给子组件传递属性时,子组件不通过props来接收
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '冰红茶 yooo',
+            }
+        },
+        template: `
+        <test style="color:red;" m='hello'/>
+            `,
+
+    });
+    // 当子组件template 有多个标签的时候,就不会自动拿到上面的style属性了,要通过v-bind="$attrs"指定(可以拿到父组件传过来的)
+    app.component("test",{
+        mounted() { //当页面加载完成之后会自动执行。钩子函数中也可以通过$attrs拿到父组件传过来的属性
+            console.log(this.$attrs);
+        },
+        // props:["message"],
+        // inheritAttrs:false,  //不继承父组件传过来的属性。
+        template:`
+        <div>hihi</div>
+        <div v-bind="$attrs">hihi</div>
+        <div :m='$attrs.m'>hihi</div>
+        `
+        // <h4>{{message}} hihi</h4>
+    })
+    const vm = app.mount("#wei");
+</script>
+
+</html>

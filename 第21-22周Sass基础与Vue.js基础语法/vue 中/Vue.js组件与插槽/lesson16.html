@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 16</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="wei">
+    </div>
+</body>
+
+<script>
+    // <test v-bind:="params" />
+    // <test :content="params.content :a="params.a" :b="params.b" :c="params.c" />
+    // 属性传的时候,使用content-abc 这种命名,接的时候,使用 contentAbc 命名
+    // 单项数据流的概念:(父组件的数据可以流向子组件但是子组件不能修改这个值。可以用不能改)
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '冰红茶 yooo',
+                params:{
+                    number:10086,
+                    a:123,
+                    b:456,
+                    c:789
+                },
+                content:"hello",
+                num:1
+            }
+        },
+        template: `
+        <div>
+            <h4>{{message}}</h4>
+        <hr>
+        <test v-bind:="params" :content-abc="content" />
+        <counter :count="num"/>
+        </div>
+            `,
+        // <test v-bind:content="number" :a="a" :b="b" :c="c" />
+
+    });
+    //上面指定的名称是 content-abc。但是下面要用的时候使用contentAbc才行
+    app.component("test",{
+        props:["number","a","b","c","contentAbc"],
+        template:`
+        <hr>
+        <h4>{{number}}-{{a}}-{{b}}-{{c}}here is Test</h4>
+        <h4>{{contentAbc}}</h4>
+        {{typeof a}}
+        `
+    })
+    app.component("counter",{
+        props:['count'],
+        data() {
+            return {
+                // 相当于复制了一份再修改是可以的
+                myCount:this.count
+            }
+        },
+        template:`<h4 @click="myCount +=1">{{myCount}}</h4>`
+        // template:`<h4 @click="count +=1">{{count}}</h4>`
+    })
+    const vm = app.mount("#wei");
+</script>
+
+</html>

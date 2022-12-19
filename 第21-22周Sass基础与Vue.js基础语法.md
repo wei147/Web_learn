@@ -1246,3 +1246,281 @@ if 和 else要贴着写
 
 #### Vue组件间传值
 
+```vue
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 15</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="wei">
+    </div>
+</body>
+
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '冰红茶 yooo',
+                // number:"10086"
+                //传给子组件的甚至可以是一个函数
+                // number:()=>{alert(10086)}
+                number:10086
+            }},
+        // <test content="hi hi "/> 把数据通过属性的形式传递给test组件。组件可以通过props接收
+        //组件的动态属性(传参)。通过v-bind绑定传递给组件的属性值,有data里面的数据决定组件的内容
+        template: `
+        <div>
+            <h4>{{message}}</h4>
+        <hr>
+        <test v-bind:content="number"/>
+        </div>
+            `,
+    });
+    //type:String,Boolean,Array,Object,Function,Symbol
+    //required 必填
+    //default 默认值,,
+    //validator 检验传进来的值
+    app.component("test",{
+        // 子组件可以对父组件传进来的参数做一个校验。这里父组件传进来的必须是一个String类型
+        props:{
+            // 'content':Function,
+            content:{
+                type:Number,
+                // required:true
+                // default:9000
+                validator:function(value){
+                    return value<100000;
+                },
+                default:()=>{
+                    return 9000
+                }
+            }},
+        methods: {
+            handleClick(){
+                alert("hi"),
+                this.content()
+            }
+        },
+        template:`<h4 @click="handleClick">{{content}}here is Test</h4>
+        <hr>
+        <h4>{{content}}here is Test</h4>
+        {{typeof content}}
+        `
+    })
+    const vm = app.mount("#wei");
+</script>
+</html>
+```
+
+
+
+#### Vue组件的一些细节问题
+
+```vue
+//之所以vue里面会有单项数据流的这个概念。是因为子组件修改父组件的值会导致一些问题的出现,数个子组件修改了父组件的值会导致其他子组件引用的值也跟着变化
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 15</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="wei">
+    </div>
+</body>
+
+<script>
+    // <test v-bind:="params" />
+    // <test :content="params.content :a="params.a" :b="params.b" :c="params.c" />
+    // 属性传的时候,使用content-abc 这种命名,接的时候,使用 contentAbc 命名
+    // 单项数据流的概念:(父组件的数据可以流向子组件但是子组件不能修改这个值。可以用不能改)
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '冰红茶 yooo',
+                params:{
+                    number:10086,
+                    a:123,
+                    b:456,
+                    c:789
+                },
+                content:"hello",
+                num:1
+            }},
+        template: `
+        <div>
+            <h4>{{message}}</h4>
+        <hr>
+        <test v-bind:="params" :content-abc="content" />
+        <counter :count="num"/>
+        </div>
+            `,
+        // <test v-bind:content="number" :a="a" :b="b" :c="c" />
+
+    });
+    //上面指定的名称是 content-abc。但是下面要用的时候使用contentAbc才行
+    app.component("test",{
+        props:["number","a","b","c","contentAbc"],
+        template:`
+        <hr>
+        <h4>{{number}}-{{a}}-{{b}}-{{c}}here is Test</h4>
+        <h4>{{contentAbc}}</h4>
+        {{typeof a}}
+        `
+    })
+    app.component("counter",{
+        props:['count'],
+        data() {
+            return {
+                // 相当于复制了一份再修改是可以的
+                myCount:this.count
+            } },
+        template:`<h4 @click="myCount +=1">{{myCount}}</h4>`
+        // template:`<h4 @click="count +=1">{{count}}</h4>`
+    })
+    const vm = app.mount("#wei");
+</script>
+</html>
+```
+
+
+
+#### Non-prop 属性和$attrs
+
+```vue
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 17</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="wei">
+    </div>
+</body>
+
+<script>
+    // Non-prop 属性 就是说父组件给子组件传递属性时,子组件不通过props来接收
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '冰红茶 yooo',
+            }
+        },
+        template: `
+        <test style="color:red;" m='hello'/>
+            `,
+    });
+    // 当子组件template 有多个标签的时候,就不会自动拿到上面的style属性了,要通过v-bind="$attrs"指定(可以拿到父组件传过来的)
+    app.component("test",{
+        mounted() { //当页面加载完成之后会自动执行。钩子函数中也可以通过$attrs拿到父组件传过来的属性
+            console.log(this.$attrs);
+        },
+        // props:["message"],
+        // inheritAttrs:false,  //不继承父组件传过来的属性。
+        template:`
+        <div>hihi</div>
+        <div v-bind="$attrs">hihi</div>
+        <div :m='$attrs.m'>hihi</div>
+        `
+        // <h4>{{message}} hihi</h4>
+    })
+    const vm = app.mount("#wei");
+</script>
+</html>
+```
+
+
+
+#### 组件间如何通过事件进行通信
+
+```java
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 18</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="wei">
+    </div>
+</body>
+<script>
+    // 实现父子组件的通信
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '冰红茶 yooo',
+                count:1
+            }
+        },
+        methods: {
+            handleAddOne(){
+                this.count +=1
+                // this.count = this.count+1;
+            },
+            handleAdd(param1,param2){//这里的param是子组件传过来的参数
+                // this.count = this.count+param;
+                // this.count +=param2;
+                this.count = param1;
+            } },
+        template: `
+        <test :count="count" @add='handleAdd'/>
+            `,
+            // <test :count="count" @add-one='handleAddOne'/>
+            // 触发事件用驼峰。监听事件用横线间隔
+            // <test :count="count" @addOne='handleAddOne'/> 这里要写成add-one
+
+    });
+    app.component("test",{
+        props:["count"],
+        // emits:["add"], //组件会向外触发一个add事件。emits:["min"] 如果没有这个事件则会警告。可以梳理向外触发了什么事件
+        // 还可以写成对象的形式。可以校验传过去的参数。
+        emits:{
+            add:(count)=>{
+                alert(count)
+                if (count>0) {
+                    alert("ok")
+                    return true;
+                }
+                alert("no")
+                return false;
+            }},
+        methods: {
+            handleClick(){
+                // 这里触发了一个事件将会在上面被父组件监听到,并执行相应的操作
+                // this.$emit('addOne')
+                // this.$emit('add',2,3) //每次加2
+                this.$emit('add',this.count+5,2) //可以直接在子组件这里处理完成之后,再传回给父组件更新
+            }
+        },
+        template:`
+        <div>
+            <h4 @click="handleClick">{{count}}</h4>
+            </div>
+        `})
+    const vm = app.mount("#wei");
+</script>
+</html>
+```
+

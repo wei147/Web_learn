@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 18</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="wei">
+    </div>
+</body>
+
+<script>
+    // 实现父子组件的通信
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '冰红茶 yooo',
+                count:1
+            }
+        },
+        methods: {
+            handleAddOne(){
+                this.count +=1
+                // this.count = this.count+1;
+            },
+
+            handleAdd(param1,param2){//这里的param是子组件传过来的参数
+                // this.count = this.count+param;
+                // this.count +=param2;
+                this.count = param1;
+            }
+            },
+        template: `
+        <test :count="count" @add='handleAdd'/>
+            `,
+            // <test :count="count" @add-one='handleAddOne'/>
+            // 触发事件用驼峰。监听事件用横线间隔
+            // <test :count="count" @addOne='handleAddOne'/> 这里要写成add-one
+
+    });
+    app.component("test",{
+        props:["count"],
+        // emits:["add"], //组件会向外触发一个add事件。emits:["min"] 如果没有这个事件则会警告。可以梳理向外触发了什么事件
+        // 还可以写成对象的形式。可以校验传过去的参数。
+        emits:{
+            add:(count)=>{
+                alert(count)
+                if (count>0) {
+                    alert("ok")
+                    return true;
+                }
+                alert("no")
+                return false;
+            }
+        },
+        methods: {
+            handleClick(){
+                // 这里触发了一个事件将会在上面被父组件监听到,并执行相应的操作
+                // this.$emit('addOne')
+                // this.$emit('add',2,3) //每次加2
+                this.$emit('add',this.count+5,2) //可以直接在子组件这里处理完成之后,再传回给父组件更新
+            }
+        },
+        template:`
+        <div>
+            <h4 @click="handleClick">{{count}}</h4>
+            </div>
+        `
+    })
+    const vm = app.mount("#wei");
+</script>
+
+</html>
