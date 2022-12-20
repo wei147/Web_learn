@@ -1524,3 +1524,183 @@ if 和 else要贴着写
 </html>
 ```
 
+
+
+#### 利用v-model简化父组件与子组件通信
+
+```vue
+<script>
+    // 利用v-model简化父组件与子组件通信
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '冰红茶 yooo',
+                count:1
+            }},
+        //要想改变的modelValue这个默认值。可以在<test v-model:newName="count"/>修改
+        template: `
+        <test v-model="count"/>
+            `,
+    });
+    app.component("test",{
+        props:["modelValue"], //要想接收来自v-model绑定的值。这里必须是modelValue
+        emits:[
+            'add'
+        ],
+        methods: {
+            handleClick(){
+                // 这里触发事件的名字一定要叫 update:modelValue
+                this.$emit('update:modelValue',this.modelValue+5,2)
+            }
+        },
+        template:`
+        <div>
+            <h4 @click="handleClick">{{modelValue}}</h4> </div>`
+    })
+    const vm = app.mount("#wei");
+</script>
+```
+
+
+
+#### v-model的高级用法  (v-mdeo传递多个属性  v-model传递修饰符)
+
+```vue
+
+<script>
+    // 利用v-model简化父组件与子组件通信
+    const app = Vue.createApp({
+        data() {
+            return {
+                count:1,
+                count1:1,
+
+            }
+        },
+        template: `
+        <test v-model:count="count" v-model:count1="count1"/>
+            `,
+    });
+    app.component("test",{
+        props:["count","count1"],
+        methods: {
+            handleClick(){
+                this.$emit('update:count',this.count+1)
+            },
+            handleClick1(){
+                this.$emit('update:count1',this.count1+2)
+            }},
+        template:`
+        <div>
+            <h4 @click="handleClick">{{count}}</h4>
+            <h4 @click="handleClick1">{{count1}}</h4>
+            </div>
+        `})
+    const vm = app.mount("#wei");
+</script>
+```
+
+```javascript
+const app = Vue.createApp({
+        data() {
+            return {
+                count: 'a',
+            }
+        },
+        template:
+        // v-model.uppercase 在传递uppercase这个修饰符,后面在子组件中可以拿到
+         `<test v-model.uppercase="count" />
+            `,
+    });
+    app.component("test", {
+        props: {
+            "modelValue": String,
+            "modelModifiers": {  //v-model.uppercase="count" 这里可以拿到uppercase
+                default: () => ({}) //不传递修饰符的时候,默认为空
+            }
+        },
+        mounted() {
+            //uppercase
+            console.log(this.modelModifiers);
+        },
+        methods: {
+            handleClick() {
+                let newValue = this.modelValue+'b';
+                if (this.modelModifiers.uppercase) {
+                    newValue = newValue.toUpperCase(); //将所有内容转化成大写
+                }
+                this.$emit('update:modelValue', newValue)
+            },
+        },
+        template: `
+        <div>
+            <h4 @click="handleClick">{{modelValue}}</h4>
+            </div>
+        `
+    })
+    const vm = app.mount("#wei");
+</script>
+```
+
+
+
+#### slot 插槽
+
+```vue
+<script>
+    //slot 插槽 (slot没办法绑定事件)
+    //父模板里调用的数据属性,使用的都是父模板里的数据
+    //子模板里调用的数据属性,使用的都是子模板里的数据
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '橘子',
+            }
+        },
+        template:
+         `<myform>
+            <div>{{message}} send</div>
+            </myform>
+
+         <myform>
+            <button>send</button>
+            <test/>
+            </myform>
+            `,
+    });
+    app.component("myform", {
+        methods: {
+            handleClick() {
+                alert("1234")
+            },
+        },
+        template: `
+        <div>
+            <input />
+            <span @click="handleClick">
+            <slot></slot>
+            </span>
+            </div>
+        `
+        // <button @click="handleClick">send</button>
+    })
+    app.component("test", {
+        methods: {
+            handleClick() {
+                alert("1234")
+            },
+        },
+        template: `
+        <h4>hi</h4>
+        `
+    })
+    const vm = app.mount("#wei");
+</script>
+```
+
+
+
+
+
+### 第2章Vue.js过渡与动画
+

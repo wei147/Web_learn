@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 18</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="wei">
+    </div>
+</body>
+
+<script>
+    // 利用v-model简化父组件与子组件通信
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '冰红茶 yooo',
+                count:1
+            }
+        },
+        //要想改变的modelValue这个默认值。可以在<test v-model:newName="count"/>修改
+        template: `
+        <test v-model="count"/>
+            `,
+    });
+    app.component("test",{
+        props:["modelValue"], //要想接收来自v-model绑定的值。这里必须是modelValue
+        emits:[
+            'add'
+        ],
+        methods: {
+            handleClick(){
+                // 这里触发事件的名字一定要叫 update:modelValue
+                this.$emit('update:modelValue',this.modelValue+5,2)
+            }
+        },
+        template:`
+        <div>
+            <h4 @click="handleClick">{{modelValue}}</h4> </div>
+        `
+    })
+    const vm = app.mount("#wei");
+</script>
+
+</html>

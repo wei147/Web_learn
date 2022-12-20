@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 20</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="wei">
+    </div>
+</body>
+
+<script>
+    //slot 插槽 (slot没办法绑定事件)
+    //父模板里调用的数据属性,使用的都是父模板里的数据
+    //子模板里调用的数据属性,使用的都是子模板里的数据
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '橘子',
+            }
+        },
+        template:
+         `<myform>
+            <div>{{message}} send</div>
+            </myform>
+
+
+         <myform>
+            <button>send</button>
+            <test/>
+            </myform>
+
+            <myform>
+            </myform>
+            `,
+    });
+    app.component("myform", {
+        methods: {
+            handleClick() {
+                alert("1234")
+            },
+        },
+        // 如果slot传了值就不会用默认值
+        template: `
+        <div>
+            <input />
+            <span @click="handleClick">
+            <slot>默认值</slot>
+            </span>
+            </div>
+        `
+        // <button @click="handleClick">send</button>
+    })
+    app.component("test", {
+        methods: {
+            handleClick() {
+                alert("1234")
+            },
+        },
+        template: `
+        <h4>hi</h4>
+        `
+    })
+    const vm = app.mount("#wei");
+</script>
+
+</html>
