@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 20-1</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="wei">
+    </div>
+</body>
+
+<script>
+    //具名插槽 (可以调整位置,更加灵活和方便)
+    // v-slot的简写 v-slot:header  简写  #header
+    //作用域插槽 
+    const app = Vue.createApp({
+        
+        data() {
+            return {
+                message: '橘子',
+            }
+        },
+        //用slotProps 接收子组件 slot 传过来的值
+        //解构(es6语法) v-slot="slotProps"  简写 
+        template:
+
+        // <list v-slot="slotProps">
+        //     <span>{{slotProps.item}}</span>
+        //     <div>{{slotProps.text}}</div>
+        //  </list>
+         `
+         <list v-slot="{item,text}">
+            <span>{{item}}</span>
+            <div>{{text}}</div>
+         </list>
+
+
+            <layout>
+                <template #header>
+                <h5>header</h5>
+                </template>
+
+                <template #footer>
+                <h5>footer</h5>
+                </template>
+                </layout>
+            `,
+    });
+    app.component("list", {
+        data() {
+            return {
+                list:[1,2,3],
+                text:"hihi"
+            }
+        },
+        template: `
+        <div>
+            <slot v-for="item in list" :item="item" :text="text"/>
+        </div>
+        `
+        // <div v-for="item in list">{{item}}</div>
+    })
+    app.component("layout", {
+        template: `
+        <div>
+          <slot name="header"></slot>  
+          <div>content</div>
+          <slot name="footer"></slot>  
+        </div>
+        `
+    })
+    const vm = app.mount("#wei");
+</script>
+
+</html>

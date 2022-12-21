@@ -18,6 +18,7 @@
     //slot 插槽 (slot没办法绑定事件)
     //父模板里调用的数据属性,使用的都是父模板里的数据
     //子模板里调用的数据属性,使用的都是子模板里的数据
+    //具名插槽 (可以调整位置,更加灵活和方便)
     const app = Vue.createApp({
         data() {
             return {
@@ -37,8 +38,27 @@
 
             <myform>
             </myform>
+
+            <layout>
+                <template v-slot:header>
+                <h5>header</h5>
+                </template>
+
+                <template v-slot:footer>
+                <h5>footer</h5>
+                </template>
+                </layout>
             `,
     });
+    app.component("layout", {
+        template: `
+        <div>
+          <slot name="header"></slot>  
+          <div>content</div>
+          <slot name="footer"></slot>  
+        </div>
+        `
+    })
     app.component("myform", {
         methods: {
             handleClick() {

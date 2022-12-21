@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 22</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="wei">
+    </div>
+</body>
+
+<script>
+    // v-once 让某个元素标签只渲染一次
+    // ref 实际上是获取dom 节点用的一个语法
+    // provide / inject 多级组件传值 (不用层层传递。但现在有缺点不会跟随变化)
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '橘子',
+                // currentItem:'input-item'
+                count: 1,
+                num:108,
+                tag:"半缘修道半缘君。",
+            }
+        },
+        // provide:{
+        //     tag:"半缘修道半缘君",
+        //      tag:this.tag
+        // },
+        //上面的写法不能直接拿到data里面的值。要写成对象的形式
+        provide(){
+            return{
+                tag:this.tag
+            }
+        },
+        //要想获取dom,必须要在标签挂载之后。所以在页面渲染完成才获取
+        mounted() {
+            console.log(this.$refs.num);
+            // this.$refs.num.innerHTML = "10086"  //可以在获取之后,来操纵dom
+            console.log(this.$refs.common);
+            // this.$refs.common.sayHi() //通过ref获取到子组件的方法,然后调用
+        },
+        methods: {
+        },
+        //有v-once的标签只渲染一次。后面就不再渲染了 (vm.$data.count)
+        template: `
+         <div @click="count +=1" v-once>
+            <h4>{{count}}</h4>
+            </div>
+            <hr>
+            <div ref="num">
+                {{num}}
+            </div>
+            <hr>
+            <common-item ref="common"/>
+            <hr>
+            <child :message="message"/>
+            `,
+    });
+    app.component("common-item", {
+        methods: {
+            sayHi(){
+                alert('Hi')
+            }
+        },
+        template: `
+        <h4>hi, here is common-item </h4>
+        `
+    })
+    // 多级组件传值 (原先用props接收传递的太繁复了。用provide/inject可以直达,不需要层层传递)
+    app.component("child", {
+        props:["message"],
+        template: `
+        <child-child :message="message"></child-child>
+        `
+    })
+    app.component("child-child", {
+        inject:["tag"],
+        props:["message"],
+        template: `
+        <h4>{{message}}</h4>
+        <h4>{{tag}}</h4>
+        `
+    })
+    const vm = app.mount("#wei");
+</script>
+
+</html>

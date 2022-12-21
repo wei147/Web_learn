@@ -1644,19 +1644,19 @@ const app = Vue.createApp({
 
 
 
-#### slot 插槽
+#### slot 插槽以及具名插槽
 
 ```vue
 <script>
     //slot 插槽 (slot没办法绑定事件)
     //父模板里调用的数据属性,使用的都是父模板里的数据
     //子模板里调用的数据属性,使用的都是子模板里的数据
+    //具名插槽 (可以调整位置,更加灵活和方便)
     const app = Vue.createApp({
         data() {
             return {
                 message: '橘子',
-            }
-        },
+            }},
         template:
          `<myform>
             <div>{{message}} send</div>
@@ -1666,19 +1666,42 @@ const app = Vue.createApp({
             <button>send</button>
             <test/>
             </myform>
+
+            <myform>
+            </myform>
+
+            <layout>
+                <template v-slot:header>
+                <h5>header</h5>
+                </template>
+
+                <template v-slot:footer>
+                <h5>footer</h5>
+                </template>
+                </layout>
             `,
     });
+    app.component("layout", {
+        template: `
+        <div>
+          <slot name="header"></slot>  
+          <div>content</div>
+          <slot name="footer"></slot>  
+        </div>
+        `
+    })
     app.component("myform", {
         methods: {
             handleClick() {
                 alert("1234")
             },
         },
+        // 如果slot传了值就不会用默认值
         template: `
         <div>
             <input />
             <span @click="handleClick">
-            <slot></slot>
+            <slot>默认值</slot>
             </span>
             </div>
         `
@@ -1688,10 +1711,75 @@ const app = Vue.createApp({
         methods: {
             handleClick() {
                 alert("1234")
-            },
-        },
+            },},
         template: `
         <h4>hi</h4>
+        `})
+    const vm = app.mount("#wei");
+</script>
+```
+
+
+
+#### slot高级语法 (传递参数和简写)
+
+```vue
+<script>
+    //具名插槽 (可以调整位置,更加灵活和方便)
+    // v-slot的简写 v-slot:header  简写  #header
+    //作用域插槽 
+    const app = Vue.createApp({
+        
+        data() {
+            return {
+                message: '橘子',
+            }
+        },
+        //用slotProps 接收子组件 slot 传过来的值
+        //解构(es6语法) v-slot="slotProps"  简写 
+        template:
+
+        // <list v-slot="slotProps">
+        //     <span>{{slotProps.item}}</span>
+        //     <div>{{slotProps.text}}</div>
+        //  </list>
+         `
+         <list v-slot="{item,text}">
+            <span>{{item}}</span>
+            <div>{{text}}</div>
+         </list>
+
+            <layout>
+                <template #header>
+                <h5>header</h5>
+                </template>
+
+                <template #footer>
+                <h5>footer</h5>
+                </template>
+                </layout>
+            `,
+    });
+    app.component("list", {
+        data() {
+            return {
+                list:[1,2,3],
+                text:"hihi"
+            } },
+        template: `
+        <div>
+            <slot v-for="item in list" :item="item" :text="text"/>
+        </div>
+        `
+        // <div v-for="item in list">{{item}}</div>
+    })
+    app.component("layout", {
+        template: `
+        <div>
+          <slot name="header"></slot>  
+          <div>content</div>
+          <slot name="footer"></slot>  
+        </div>
         `
     })
     const vm = app.mount("#wei");
@@ -1699,6 +1787,148 @@ const app = Vue.createApp({
 ```
 
 
+
+#### 动态组件和异步组件
+
+```vue
+<script>
+    //动态组件: 根据数据的变化,结合 component标签,来随时动态切换组件的显示  (<keep-alive>标签缓存)
+    //异步组件: 异步执行某些组件的逻辑,这就叫做异步组件 (比如延时执行)
+
+    //定义异步组件
+    // const AsyncCommonItem = Vue.defineAsyncComponent(()=>{
+    //     return new Promise(()=>{})})
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '橘子',
+                // currentItem:'input-item'
+                currentItem: 'common-item'
+            }},
+        methods: {
+            handleChange() {
+                console.log(this.currentItem);
+                if (this.currentItem == "common-item") {
+                    this.currentItem = "input-item"
+                } else {
+                    this.currentItem = "common-item"
+                }}},
+        //使用 <keep-alive>标签之后,之前input输入框切换到h4标签的原先输入内容会消失这个情况就解决了 (缓存)
+        template: `
+         <keep-alive>
+            <component :is="currentItem"></component>
+         </keep-alive>
+
+         <button @click="handleChange">Change</button>
+
+         <async-common-item />
+            `,
+        // 使用动态组件 component 来代替这两行的显示问题
+        //<input-item v-show="currentItem === 'input-item'"></input-item>
+        //<common-item v-show="currentItem === 'common-item'"/>
+    });
+    app.component("input-item", {
+        template: `
+        <input />
+        `
+    })
+    app.component("common-item", {
+        template: `
+        <h4>hi </h4>
+        `
+    })
+    //注册异步组件
+    app.component("async-common-item", Vue.defineAsyncComponent(() => {
+        return new Promise((resolve,reject) => {
+            setTimeout(() => {
+                resolve({
+                    template: `<h4>hi hi async Component</h4>`,
+                })
+            }, 2000);
+        })}));
+    const vm = app.mount("#wei");
+</script>
+```
+
+
+
+#### vue组件基础  v-once   ref   provide / inject
+
+```vue
+<script>
+    // v-once 让某个元素标签只渲染一次
+    // ref 实际上是获取dom 节点用的一个语法
+    // provide / inject 多级组件传值 (不用层层传递。但现在有缺点不会跟随变化)
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '橘子',
+                // currentItem:'input-item'
+                count: 1,
+                num:108,
+                tag:"半缘修道半缘君。",
+            }
+        },
+        // provide:{
+        //     tag:"半缘修道半缘君",
+        //      tag:this.tag
+        // },
+        //上面的写法不能直接拿到data里面的值。要写成对象的形式
+        provide(){
+            return{
+                tag:this.tag
+            }},
+        //要想获取dom,必须要在标签挂载之后。所以在页面渲染完成才获取
+        mounted() {
+            console.log(this.$refs.num);
+            // this.$refs.num.innerHTML = "10086"  //可以在获取之后,来操纵dom
+            console.log(this.$refs.common);
+            // this.$refs.common.sayHi() //通过ref获取到子组件的方法,然后调用
+        },
+        methods: {
+        },
+        //有v-once的标签只渲染一次。后面就不再渲染了 (vm.$data.count)
+        template: `
+         <div @click="count +=1" v-once>
+            <h4>{{count}}</h4>
+            </div>
+            <hr>
+            <div ref="num">
+                {{num}}
+            </div>
+            <hr>
+            <common-item ref="common"/>
+            <hr>
+            <child :message="message"/>
+            `,
+    });
+    app.component("common-item", {
+        methods: {
+            sayHi(){
+                alert('Hi')
+            } },
+        template: `
+        <h4>hi, here is common-item </h4>
+        `
+    })
+    // 多级组件传值 (原先用props接收传递的太繁复了。用provide/inject可以直达,不需要层层传递)
+    app.component("child", {
+        props:["message"],
+        template: `
+        <child-child :message="message"></child-child>
+        `
+    })
+    app.component("child-child", {
+        inject:["tag"],
+        props:["message"],
+        template: `
+        <h4>{{message}}</h4>
+        <h4>{{tag}}</h4>
+        `
+    })
+    const vm = app.mount("#wei");
+</script>
+```
 
 
 
