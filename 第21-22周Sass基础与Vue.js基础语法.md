@@ -1934,3 +1934,94 @@ const app = Vue.createApp({
 
 ### 第2章Vue.js过渡与动画
 
+#### 动画与过渡 开始
+
+```vue
+    <title>lesson 23</title>
+    <style>
+        /* 动画效果。类似要k帧一样 */
+        @keyframes leftToRight {
+            0% {
+                transform: translateX(-100px);
+            }
+
+            50% {
+                transform: translateX(-50px);
+            }
+
+            0% {
+                transform: translateX(0px);
+            }
+        }
+
+        .animation {
+            animation: leftToRight 3s;
+        }
+
+        /* 过渡
+        ease 缓慢过渡效果。 
+        当背景色发生变化的时候,会在三秒钟缓慢的变化它的背景色, */
+        .transition {
+            transition: 3s background-color ease;
+        }
+
+        /* .blue{
+            background: blue;
+        }
+
+        .green{
+            background: green;
+        } */
+    </style>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="wei">
+    </div>
+</body>
+
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '橘子',
+                animate: {
+                    animation: false,
+                    transition:true,
+                    blue:true,
+                    green:false
+                },
+                // 更简洁的方式来改变颜色变化。过渡
+                styleObj:{
+                    background: 'blue'
+                }}},
+        methods: {
+            handleChange() {
+                this.animate.animation = !this.animate.animation
+            },
+            handleClick() {
+                this.animate.blue = !this.animate.blue
+                this.animate.green = !this.animate.green
+            },
+            changeStyle() {
+                if (this.styleObj.background=="blue") {
+                    this.styleObj.background="green"
+                }else{
+                    this.styleObj.background='blue'
+                }},},
+        template: `
+            <div :class="animate">
+               {{message}}
+            </div>
+            <button @click="handleChange">change</button>
+            <hr>
+            <h4 :class="animate" @click="handleClick">半缘修道半缘君</h4>
+            <hr>
+            <h4 class="transition" :style="styleObj" @click="changeStyle">万古人间四月天</h4>
+            `,
+    });
+    const vm = app.mount("#wei");
+</script>
+```
+
