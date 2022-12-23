@@ -2025,3 +2025,88 @@ const app = Vue.createApp({
 </script>
 ```
 
+
+
+#### vue封装的动画和过渡效果
+
+```vue
+ <title>lesson 24</title>
+    <style>
+
+        /* 动画依赖于v-enter-active和v-leave-active就可以了 */
+        @keyframes shake{
+            0%{
+                transform: translateX(-100px);
+            }
+            50%{
+                transform: translateX(-50px);
+            }
+            100%{
+                transform: translateX(50px);
+            }
+        }
+
+        /* 出场 */
+        .v-enter-from {
+            opacity: 0;
+            ;
+        }
+
+        /* 整个动画出场的过程中 */
+        .v-enter-active {
+            /* transition: opacity 3s ease-out; */
+            animation:shake 1s;
+        }
+
+        /* 出场最后？ */
+        .v-enter-to {
+            opacity: 1;
+        }
+
+        /* 离场 */
+        /* .v-leave-from {
+            opacity: 1;
+        } */
+        /* 整个动画离场执行的过程中 */
+        .v-leave-active {
+            transition: opacity 2s ease-;
+        }
+        /* 离场 */
+        .v-leave-to {
+            opacity: 0;
+        }
+    </style>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="wei">
+    </div>
+</body>
+<script>
+    //单元素/单组件的入场出场动画
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '橘子',
+                show: true
+            }},
+        methods: {
+            handleChange() {
+                this.show = !this.show
+            },},
+        // <transition name="hello"> 上面的.v-enter-to 就应该写成 hello-enter-to
+        template: `
+        <transition>
+            <div v-if="show">
+               {{message}}
+            </div>
+        </transition>
+            <hr>
+            <button @click="handleChange">change</button>
+            `,
+    });
+    const vm = app.mount("#wei");
+</script>
+```
+
