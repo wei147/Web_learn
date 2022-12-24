@@ -2110,3 +2110,14 @@ const app = Vue.createApp({
 </script>
 ```
 
+#### 利用动画库
+
+```vue
+ <!-- 引入的动画库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+        template: `
+            <h3 class="animate__animated animate__flash">Hi Hi</h3>
+            `,
+```
+

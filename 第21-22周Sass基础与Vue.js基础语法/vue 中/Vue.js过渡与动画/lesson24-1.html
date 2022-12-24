@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>lesson 24</title>
+    <title>lesson 24-1</title>
     <!-- 引入的动画库 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <style>
@@ -38,15 +38,6 @@
             /* color: green; */
         }
 
-        /* 出场最后？ */
-        /* .v-enter-to {
-            color: green;
-        } */
-
-        /* 离场 */
-        /* .v-leave-from {
-            opacity: 1;
-        } */
         /* 整个动画离场执行的过程中 */
         .v-leave-active {
             animation: shake 2s;
@@ -82,7 +73,6 @@
                 this.show = !this.show
             },
         },
-        // <transition name="hello"> 上面的.v-enter-to 就应该写成 hello-enter-to
         template: `
         <transition>
             <div v-if="show">
@@ -91,13 +81,6 @@
         </transition>
             <hr>
             <button @click="handleChange">change</button>
-
-            <hr>
-            <transition 
-                enter-active-class="animate__animated animate__flash"
-                leave-active-class="animate__animated animate__flash">
-            <h3 class="animate__animated animate__flash">Hi Hi</h3>
-            </transition>
             `,
     });
     const vm = app.mount("#wei");
