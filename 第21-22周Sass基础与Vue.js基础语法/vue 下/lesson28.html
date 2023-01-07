@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 28</title>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="wei">
+    </div>
+</body>
+
+<script>
+    // mixin 混入
+    // 组件data、methods 优先级高于 mixin data,methods 优先级
+    // 生命周期函数,先执行mixin里面的,再执行组件里面的
+    // 自定义的属性 组件中的属性优先级高于 mixin属性的优先级
+    const myMixin = {
+            num: 10
+        }
+    const app = Vue.createApp({
+        num: 2, //自定义的属性 (使用自定义属性 this.$options.num)
+        // 当组件里没有数据的时候myMixin会混进来
+        mixins: [myMixin],
+        template: `
+            <div @click="handleClick">
+               {{this.$options.num}} 
+            </div>
+            <br>
+            {{count}}
+            <child />
+            `,
+    });
+    // 修改自定义属性num在混入和组件的优先级 mixinVal 高于组件
+    app.config.optionMergeStrategies.num = (mixinVal, appValue) => {
+        return mixinVal || appValue;
+    }
+    // 全局的mixin
+    // app.mixin({
+    //     data() {
+    //         return {
+    //             num: 10,
+    //             count: 1008611
+    //         }
+    //     },
+    //     created() {
+    //         console.log("myMixin 我被创建了")
+    //     },
+    //     methods: {
+    //         handleClick() {
+    //             console.log("hi mixin里面的");
+    //         },
+    //     },
+
+    // });
+    app.component("child", {
+        // mixins: [myMixin], //子组件要用mixin的值要在子组件中引入。(另外还有全局的mixin。全局的就可以直接用)
+        template: `<h4>hi chen{{count}}</h4>`
+    })
+    const vm = app.mount("#wei");
+</script>
+
+</html>

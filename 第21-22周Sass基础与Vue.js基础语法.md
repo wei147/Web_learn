@@ -2121,3 +2121,221 @@ const app = Vue.createApp({
             `,
 ```
 
+#### js来写动画以及控制动画/过渡的时间
+
+```vue
+   <style>
+        /* 动画依赖于v-enter-active和v-leave-active就可以了 */
+        @keyframes shake {
+            0% {
+                transform: translateX(-100px);
+            }
+            50% {
+                transform: translateX(-50px);
+            }
+            100% {
+                transform: translateX(50px);
+            }
+        }
+        /* 出场 */
+        .v-enter-from {
+            color: red;
+        }
+        /* 整个动画出场的过程中 */
+        .v-enter-active {
+            /* transition: opacity 3s ease-out; */
+            animation: shake 3s;
+            transition: all 8s ease-in;
+            /* color: green; */
+        }
+        /* 整个动画离场执行的过程中 */
+        .v-leave-active {
+            color: red;
+            animation: shake 3s;
+            transition: all 8s ease-in;}
+    </style>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="wei">
+    </div>
+</body>
+<script>
+    //单元素/单组件的入场出场动画
+    //vue用js做动画
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '橘子',
+                show: true
+            }},
+        methods: {
+            handleChange() {
+                this.show = !this.show
+            },
+            handleBeforeEnter(el){
+                el.style.color="red";
+            },
+            handleEnterActive(el,done){
+                const animation = setInterval(() => {
+                    const color = el.style.color;
+                    if (color=='red') {
+                        el.style.color = 'green'
+                    }else{
+                        el.style.color = 'red'
+                    }
+                }, 1000)
+                setTimeout(() => {
+                    clearInterval(animation);
+                    done(); //需要通过done() 来通知执行下一个函数 (比如handleEnterEnd)
+                }, 3000);;
+            },
+            handleEnterEnd(){
+                alert(123);
+            } },
+        // transition里面的参数 type="transition" 代表以过渡效果执行的时间为准。
+        // transition 的参数:duration="1000" 只运行一秒(不管动画和过渡是多少秒)
+        // :duration="{enter:2000,leave:2000}" 还可以是一个对象
+        // :css="false" 禁用css动画
+        template: `
+        <transition :css="false"
+        @before-enter="handleBeforeEnter"
+        @enter="handleEnterActive"
+        @after-enter="handleEnterEnd"
+        >
+            <div v-if="show">
+               {{message}}
+            </div>
+        </transition>
+            <hr>
+            <button @click="handleChange">change</button>
+            `,
+    });
+    const vm = app.mount("#wei");
+</script>
+```
+
+直接跳到vue下了。动画和过渡没看完
+
+## vue基础入门(下)
+
+#### mixin 混入的概念
+
+```vue
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="wei">
+    </div>
+</body>
+
+<script>
+    // mixin 混入
+    // 组件data、methods 优先级高于 mixin data,methods 优先级
+    // 生命周期函数,先执行mixin里面的,再执行组件里面的
+    const myMixin={
+        data() {
+            return {
+                num:10, 
+                count:1000
+            }
+        },
+        created() {
+            console.log("myMixin 我被创建了")
+        },
+        methods: {
+            handleClick() {
+                console.log("hi mixin里面的");
+            },
+        },
+    }
+    const app = Vue.createApp({
+        // data() {
+        //     return {
+        //         message: '橘子',
+        //         num:2
+        //     }
+        // },
+        // 当组件里没有数据的时候myMixin会混进来
+        mixins:[myMixin],
+        created() {
+            console.log("组件里的我被创建了")
+        },
+        methods: {
+            // handleClick() {
+            //     console.log("hi 组件里面的");
+            // },
+        },
+        template: `
+            <div @click="handleClick">
+               {{num}}
+            </div>
+            `,
+    });
+    const vm = app.mount("#wei");
+</script>
+```
+
+
+
+#### mixin 混入和组件的优先级
+
+```vue
+<script>
+    // mixin 混入
+    // 组件data、methods 优先级高于 mixin data,methods 优先级
+    // 生命周期函数,先执行mixin里面的,再执行组件里面的
+    // 自定义的属性 组件中的属性优先级高于 mixin属性的优先级
+    const myMixin = {
+            num: 10
+        }
+    const app = Vue.createApp({
+        num: 2, //自定义的属性 (使用自定义属性 this.$options.num)
+        // 当组件里没有数据的时候myMixin会混进来
+        mixins: [myMixin],
+        template: `
+            <div @click="handleClick">
+               {{this.$options.num}} 
+            </div>
+            <br>
+            {{count}}
+            <child />
+            `,
+    });
+    // 修改自定义属性num在混入和组件的优先级 mixinVal 高于组件
+    app.config.optionMergeStrategies.num = (mixinVal, appValue) => {
+        return mixinVal || appValue;
+    }
+    // 全局的mixin
+    // app.mixin({
+    //     data() {
+    //         return {
+    //             num: 10,
+    //             count: 1008611
+    //         }
+    //     },
+    //     created() {
+    //         console.log("myMixin 我被创建了")
+    //     },
+    //     methods: {
+    //         handleClick() {
+    //             console.log("hi mixin里面的");
+    //         },
+    //     },
+
+    // });
+    app.component("child", {
+        // mixins: [myMixin], //子组件要用mixin的值要在子组件中引入。(另外还有全局的mixin。全局的就可以直接用)
+        template: `<h4>hi chen{{count}}</h4>`
+    })
+    const vm = app.mount("#wei");
+</script>
+```
+
+
+
+```html
+推荐使用 CompositionAPI 而不是 mixin?  vue3之后 前者维护性更高
+```
+

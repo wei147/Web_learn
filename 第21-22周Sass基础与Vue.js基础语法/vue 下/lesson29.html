@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 29</title>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="wei">
+    </div>
+</body>
+
+<script>
+    // 自定义指令directive
+    const app = Vue.createApp({
+        mixins: [myMixin],
+        template: `
+            <input @click="handleClick">
+            </input>
+         
+            `,
+    });
+    app.component("child", {
+        template: `<h4>hi chen{{count}}</h4>`
+    })
+    const vm = app.mount("#wei");
+</script>
+
+</html>

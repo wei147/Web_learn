@@ -29,25 +29,19 @@
             color: red;
             ;
         }
-
         /* 整个动画出场的过程中 */
         .v-enter-active {
             /* transition: opacity 3s ease-out; */
-            animation: shake 2s;
-            transition: all 3s ease-in;
+            animation: shake 3s;
+            transition: all 8s ease-in;
             /* color: green; */
         }
 
         /* 整个动画离场执行的过程中 */
         .v-leave-active {
-            animation: shake 2s;
-            transition: all 3s ease-in;
             color: red;
-        }
-
-        /* 离场 */
-        .v-leave-to {
-            opacity: 0;
+            animation: shake 3s;
+            transition: all 8s ease-in;
         }
     </style>
 
@@ -61,6 +55,7 @@
 
 <script>
     //单元素/单组件的入场出场动画
+    //vue用js做动画
     const app = Vue.createApp({
         data() {
             return {
@@ -72,9 +67,37 @@
             handleChange() {
                 this.show = !this.show
             },
+            handleBeforeEnter(el){
+                el.style.color="red";
+            },
+            handleEnterActive(el,done){
+                const animation = setInterval(() => {
+                    const color = el.style.color;
+                    if (color=='red') {
+                        el.style.color = 'green'
+                    }else{
+                        el.style.color = 'red'
+                    }
+                }, 1000)
+                setTimeout(() => {
+                    clearInterval(animation);
+                    done(); //需要通过done() 来通知执行下一个函数 (比如handleEnterEnd)
+                }, 3000);;
+            },
+            handleEnterEnd(){
+                alert(123);
+            }
         },
+        // transition里面的参数 type="transition" 代表以过渡效果执行的时间为准。
+        // transition 的参数:duration="1000" 只运行一秒(不管动画和过渡是多少秒)
+        // :duration="{enter:2000,leave:2000}" 还可以是一个对象
+        // :css="false" 禁用css动画
         template: `
-        <transition>
+        <transition :css="false"
+        @before-enter="handleBeforeEnter"
+        @enter="handleEnterActive"
+        @after-enter="handleEnterEnd"
+        >
             <div v-if="show">
                {{message}}
             </div>
