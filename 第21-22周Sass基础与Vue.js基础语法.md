@@ -2339,3 +2339,65 @@ const app = Vue.createApp({
 推荐使用 CompositionAPI 而不是 mixin?  vue3之后 前者维护性更高
 ```
 
+#### 自定义指令
+
+```vue
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="wei">
+    </div>
+</body>
+
+<script>
+    // 局部的自定义属性
+    const directives = {
+        foucs: {
+            mounted(el) {
+                el.focus();
+            },
+        }
+    }
+    // 自定义指令directive
+    const app = Vue.createApp({
+        data() {
+            return {
+                flag:true
+            }
+        },
+        // directives, //使用局部的自定义属性 es6的缩写
+        template: `
+        <div v-show="flag">
+            <input v-focus />
+        </div>
+            `,
+    });
+    app.directive('focus', {
+        beforeMount() {
+            console.log("挂载之前");
+        },
+        mounted(el) {
+            console.log("挂载ing");
+            el.focus();
+        },
+        beforeUpdate() {
+            console.log("页面更新之前");
+        },
+        updated() {
+            console.log("页面更新");
+        },
+        // 如果是 v-if会触发这个
+        beforeUnmount() {
+            console.log("该标签被销毁之前执行");
+        },
+        unmounted() {
+            console.log("该标签被销毁时执行");
+        },
+    })
+    app.component("child", {
+        template: `<h4>hi chen{{count}}</h4>`
+    })
+    const vm = app.mount("#wei");
+</script>
+```
+
