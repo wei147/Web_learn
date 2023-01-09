@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 29</title>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+</head>
+    <style>
+        .header{
+            position: absolute;
+        }
+    </style>
+<body>
+    <div id="wei">
+    </div>
+</body>
+
+<script>
+    // 局部的自定义属性
+    const directives = {
+        foucs: {
+            mounted(el) {
+                el.focus();
+            },
+        }
+    }
+    // 自定义指令directive
+    const app = Vue.createApp({
+        data() {
+            return {
+                top:60
+            }
+        },
+        // directives, //使用局部的自定义属性 es6的缩写
+        template: `
+        <div v-pos="top" class="header">
+            <input/>
+        </div>
+            `,
+    });
+    app.directive('pos', {
+        // 直接在控制台改变top的值并不会让元素发生偏移。因为mounted生命周期函数没有被触发。可以换其他的
+        mounted(el,binding) {
+            // el.style.top = '100px';
+            el.style.top = (binding.value+'px');
+        },
+        updated(el,binding) {
+            el.style.top = (binding.value+'px');
+        },
+    })
+    app.component("child", {
+        template: `<h4>hi chen{{count}}</h4>`
+    })
+    const vm = app.mount("#wei");
+</script>
+
+</html>
