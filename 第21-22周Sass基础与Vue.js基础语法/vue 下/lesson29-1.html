@@ -33,26 +33,33 @@
     const app = Vue.createApp({
         data() {
             return {
-                top:60
+                distance:600
             }
         },
         // directives, //使用局部的自定义属性 es6的缩写
         template: `
-        <div v-pos="top" class="header">
+        <div v-pos:right="distance" class="header">
             <input/>
         </div>
             `,
     });
-    app.directive('pos', {
-        // 直接在控制台改变top的值并不会让元素发生偏移。因为mounted生命周期函数没有被触发。可以换其他的
-        mounted(el,binding) {
-            // el.style.top = '100px';
-            el.style.top = (binding.value+'px');
-        },
-        updated(el,binding) {
-            el.style.top = (binding.value+'px');
-        },
+
+    //简写。等价于下面的写法
+    app.directive('pos',(el,binding)=>{
+        //通过传入属性控制方向的距离
+        el.style[binding.arg] = (binding.value+'px');
+        console.log(binding);
     })
+    // app.directive('pos', {
+    //     // 直接在控制台改变top的值并不会让元素发生偏移。因为mounted生命周期函数没有被触发。可以换其他的 比如页面更新时的update
+    //     mounted(el,binding) {
+    //         // el.style.top = '100px';
+    //         el.style.top = (binding.value+'px');
+    //     },
+    //     updated(el,binding) {
+    //         el.style.top = (binding.value+'px');
+    //     },
+    // })
     app.component("child", {
         template: `<h4>hi chen{{count}}</h4>`
     })

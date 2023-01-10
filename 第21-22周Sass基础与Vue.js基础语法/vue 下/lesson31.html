@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 31</title>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+</head>
+
+<body>
+    <div id="wei">
+    </div>
+    <div id="hello">
+    </div>
+</body>
+
+<script>
+    // teleport 传送门  <teleport to="body"> 直接把这个div传送到body下
+    const app = Vue.createApp({
+        data() {
+            return {
+                show: false
+            }
+        },
+        methods: {
+            handleClick() {
+                this.show = !this.show;
+            }
+        },
+        // :level="1" 这样传过去的是 数字类型
+        template: `
+        <my-title :level="1">
+            yang
+            </my-title>
+            `,
+    });
+
+    app.component("my-title", {
+        props:['level'],
+        render(h) {
+            const {h} = Vue;
+            // this.$slots.default() 用在默认的插槽上
+            return h('h'+this.level,{},this.$slots.default())
+        },
+        template: ` <h4> <slot/></h4>
+        <br>
+        {{level}}`
+    })
+    const vm = app.mount("#wei");
+</script>
+
+</html>

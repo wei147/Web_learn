@@ -2401,3 +2401,130 @@ const app = Vue.createApp({
 </script>
 ```
 
+#### 自定义指令2
+
+```vue
+ <style>
+        .header{
+            position: absolute;}
+    </style>
+<body>
+    <div id="wei">
+    </div>
+</body>
+
+<script>
+    // 自定义指令directive
+    const app = Vue.createApp({
+        data() {
+            return {
+                distance:600
+            }
+        },
+        // directives, //使用局部的自定义属性 es6的缩写
+        template: `
+        <div v-pos:right="distance" class="header">
+            <input/>
+        </div>
+            `,
+    });
+
+    //简写。等价于下面的写法
+    app.directive('pos',(el,binding)=>{
+        //通过传入属性控制方向的距离
+        el.style[binding.arg] = (binding.value+'px');
+        console.log(binding);
+    })
+    // app.directive('pos', {
+    //     // 直接在控制台改变top的值并不会让元素发生偏移。因为mounted生命周期函数没有被触发。可以换其他的 比如页面更新时的update
+    //     mounted(el,binding) {
+    //         // el.style.top = '100px';
+    //         el.style.top = (binding.value+'px');
+    //     },
+    //     updated(el,binding) {
+    //         el.style.top = (binding.value+'px');
+    //     },
+    // })
+    app.component("child", {
+        template: `<h4>hi chen{{count}}</h4>`
+    })
+    const vm = app.mount("#wei");
+</script>
+```
+
+
+
+#### vue3提供的属性——传送门
+
+```vue
+ <title>lesson 30</title>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+</head>
+<style>
+    .area {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 200px;
+        height: 200px;
+        background: blanchedalmond;
+    }
+
+    /* 蒙尘效果 */
+    .mask {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: black;
+        opacity: 0.3;
+        color: aqua;
+        font-size: 100px;
+    }
+</style>
+
+<body>
+    <div id="wei">
+    </div>
+    <div id="hello">
+    </div>
+</body>
+
+<script>
+    // teleport 传送门  <teleport to="body"> 直接把这个div传送到body下
+    const app = Vue.createApp({
+        data() {
+            return {
+                show: false
+            }
+        },
+        methods: {
+            handleClick() {
+                this.show = !this.show;
+            }
+        },
+        template: `
+        <div class="area">
+        <button @click="handleClick">click</button>
+        <teleport to="#hello">
+        <div class="mask" v-show="show">hello</div>
+        </teleport>
+    </div>
+            `,
+    });
+
+    app.component("child", {
+        template: `<h4>hi chen{{count}}</h4>`
+    })
+    const vm = app.mount("#wei");
+</script>
+```
+
+
+
+#### vue的random函数(选学课)
+
