@@ -19,7 +19,7 @@
 </body>
 
 <script>
-    // teleport 传送门  <teleport to="body"> 直接把这个div传送到body下
+    // render function
     const app = Vue.createApp({
         data() {
             return {
@@ -41,7 +41,7 @@
 
     app.component("my-title", {
         props:['level'],
-        render(h) {
+        render() {
             const {h} = Vue;
             // this.$slots.default() 用在默认的插槽上
             return h('h'+this.level,{},this.$slots.default())

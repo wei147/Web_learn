@@ -2526,5 +2526,51 @@ const app = Vue.createApp({
 
 
 
-#### vue的random函数(选学课)
+#### vue的random函数(选学课)  是这个render
+
+```vue
+
+<body>
+    <div id="wei">
+    </div>
+    <div id="hello">
+    </div>
+</body>
+
+<script>
+    // render function
+    const app = Vue.createApp({
+        data() {
+            return {
+                show: false
+            }
+        },
+        methods: {
+            handleClick() {
+                this.show = !this.show;
+            }
+        },
+        // :level="1" 这样传过去的是 数字类型
+        template: `
+        <my-title :level="1">
+            yang
+            </my-title>
+            `,
+    });
+
+    app.component("my-title", {
+        props:['level'],
+        render() {
+            const {h} = Vue;
+            // this.$slots.default() 用在默认的插槽上
+            return h('h'+this.level,{},this.$slots.default())
+        },
+        template: ` <h4> <slot/></h4>
+        <br>
+        {{level}}`
+    })
+    const vm = app.mount("#wei");
+</script>
+
+```
 
