@@ -20,6 +20,7 @@
 
 <script>
     // render function
+    // template -> render -h -> 虚拟DOM(JS对象) ->真实DOM -> 展示到页面上 -
     const app = Vue.createApp({
         data() {
             return {
@@ -44,11 +45,34 @@
         render() {
             const {h} = Vue;
             // this.$slots.default() 用在默认的插槽上
-            return h('h'+this.level,{},this.$slots.default())
+            // 解析 :('h'+this.level)第一个参数定义了,tagName是什么
+            // 第二个是个空对象({}),对应的是 attributes
+            // 第三个是节点对应的文本内容是什么(this.$slots.default())。也可以是一个数组。对应下面的js对象来看    ,,
+            return h('h'+this.level,{},[this.$slots.default(),h('h5',{},"hi yang")])
         },
-        template: ` <h4> <slot/></h4>
+        template: ` <h4 v-if="level ===1"> <slot/></h4>
         <br>
         {{level}}`
+
+        // template在底层被编译的之后,会生成一个render函数。
+        // render函数其实它里面调用vue的这个h方法,是返回的一个内容。
+        // 这个内容实际上是vue里面一个叫
+        // 虚拟DOM的东西(实际上就是dom节点上面一个js对象的表述)
+        // 比如有一个div标签,这是一个真实的dom, <div>hi</div>
+        // 虚拟dom 
+        /**
+         * {
+         *  tagName:'div',
+         * text:'hi'
+         * attributes:{}
+         * }
+         * */
+        // 虚拟dom的意义在于什么? 1.让vue性能更快  2.让vue具备跨平台的能力(不止是网页，可以通过weex写移动端代码)
+        // ,,,
+        // template: `
+        // <h1 v-if="level ===1"> <slot/></h1>
+        // <h2 v-if="level ===2"> <slot/></h2>
+        // <h3 v-if="level ===3"> <slot/></h3> `
     })
     const vm = app.mount("#wei");
 </script>
