@@ -22,7 +22,19 @@
     // plugin 插件,也就是把通用性的功能封装起来
     const myPlugin = {
         install(app,option){
-            console.log(app,options);
+            console.log(app,option);
+            // 拓展
+            app.provide('name',"wu wei");
+            app.directive('focus',{
+                mounted(el) {
+                    el.focus();
+                },
+            })
+            app.mixin({
+                mounted() {
+                    console.log('mixin');
+                },
+            })
         }
     }
     const app = Vue.createApp({
@@ -45,10 +57,14 @@
     });
 
     app.component("my-title", {
-        template: ` <h4>hi hi</h4>`
+        inject:['name'],
+        template: ` <h4>hi hi {{name}}</h4>
+        <div><input v-focus /></div>
+        `
 
     })
 
+    // 这里使用插件
     app.use(myPlugin,{name:"chen"})
     const vm = app.mount("#wei");
 </script>
