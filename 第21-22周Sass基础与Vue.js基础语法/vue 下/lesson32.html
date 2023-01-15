@@ -21,11 +21,11 @@
 <script>
     // plugin 插件,也就是把通用性的功能封装起来
     const myPlugin = {
-        install(app,option){
-            console.log(app,option);
+        install(app, option) {
+            console.log(app, option);
             // 拓展
-            app.provide('name',"wu wei");
-            app.directive('focus',{
+            app.provide('name', "wu wei");
+            app.directive('focus', {
                 mounted(el) {
                     el.focus();
                 },
@@ -35,6 +35,8 @@
                     console.log('mixin');
                 },
             })
+            // 对vue全局的全局属性进行扩展 加$表示是vue底层私有的
+            app.config.globalProperties.$sayHello = "hello ";
         }
     }
     const app = Vue.createApp({
@@ -57,7 +59,10 @@
     });
 
     app.component("my-title", {
-        inject:['name'],
+        inject: ['name'],
+        mounted() {
+            console.log(this.$sayHello);
+        },
         template: ` <h4>hi hi {{name}}</h4>
         <div><input v-focus /></div>
         `
@@ -65,7 +70,9 @@
     })
 
     // 这里使用插件
-    app.use(myPlugin,{name:"chen"})
+    app.use(myPlugin, {
+        name: "chen"
+    })
     const vm = app.mount("#wei");
 </script>
 

@@ -2606,3 +2606,63 @@ const app = Vue.createApp({
 template -> render -h -> 虚拟DOM(JS对象) ->真实DOM -> 展示到页面上
 ```
 
+
+
+#### vue的plugin 插件,拓展功能
+
+```vue
+<body>
+    <div id="wei">
+    </div>
+    <div id="hello">
+    </div>
+</body>
+
+<script>
+    // plugin 插件,也就是把通用性的功能封装起来
+    const myPlugin = {
+        install(app, option) {
+            console.log(app, option);
+            // 拓展
+            app.provide('name', "wu wei");
+            app.directive('focus', {
+                mounted(el) {
+                    el.focus();
+                },
+            })
+            app.mixin({
+                mounted() {
+                    console.log('mixin');
+                },
+            })
+            // 对vue全局的全局属性进行扩展 加$表示是vue底层私有的
+            app.config.globalProperties.$sayHello = "hello ";
+        }
+    }
+    const app = Vue.createApp({
+        // :level="1" 这样传过去的是 数字类型
+        template: `
+        <my-title :level="1">
+            yang
+            </my-title>
+            `,
+    });
+
+    app.component("my-title", {
+        inject: ['name'],
+        mounted() {
+            console.log(this.$sayHello);
+        },
+        template: ` <h4>hi hi {{name}}</h4>
+        <div><input v-focus /></div>
+        `})
+
+    // 这里使用插件
+    app.use(myPlugin, {
+        name: "chen"
+    })
+    const vm = app.mount("#wei");
+```
+
+#### 写一个对数据做校验的插件
+
