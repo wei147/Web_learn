@@ -2664,5 +2664,57 @@ template -> render -h -> 虚拟DOM(JS对象) ->真实DOM -> 展示到页面上
     const vm = app.mount("#wei");
 ```
 
+
+
 #### 写一个对数据做校验的插件
+
+```vue
+<body>
+    <div id="wei">
+    </div>
+    <div id="hello">
+    </div>
+</body>
+
+<script>
+    // 对数据做校验的插件
+    const app = Vue.createApp({
+        data() {
+            return {
+                name: 'yang',
+                age: 26
+            }
+        },
+
+        // 这里想定义一个规则对数据进行校验
+        rules: {
+            age: {
+                validate: age => age > 18,
+                message: '未满十八岁,不允许通行'
+            }
+        },
+        methods: {
+            handleClick() {
+                this.show = !this.show;
+            }
+        },
+
+        template: `
+        <div>name: {{name}},age:{{age}}</div>
+            `,
+    });
+    app.mixin({
+        created() {
+            console.log('mixin ready');
+            for (let key in this.$options.rules) {
+                const item = this.$options.rules[key]
+                console.log(this); //获取到实例
+                console.log(key, item);
+            }
+            // console.log(this.$options.rules);
+        },
+    })
+    const vm = app.mount("#wei");
+</script>
+```
 
