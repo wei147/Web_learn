@@ -2219,6 +2219,8 @@ const app = Vue.createApp({
 
 ## vue基础入门(下)
 
+### 第1章混入与自定义指令
+
 #### mixin 混入的概念
 
 ```vue
@@ -2668,7 +2670,16 @@ template -> render -h -> 虚拟DOM(JS对象) ->真实DOM -> 展示到页面上
 
 #### 写一个对数据做校验的插件
 
+```
+mixin和plugin在真实项目中可以指怎么应用
+```
+
 ```vue
+<title>lesson 33</title>
+ <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+</head>
+
 <body>
     <div id="wei">
     </div>
@@ -2683,38 +2694,120 @@ template -> render -h -> 虚拟DOM(JS对象) ->真实DOM -> 展示到页面上
             return {
                 name: 'yang',
                 age: 26
-            }
-        },
+            }},
 
         // 这里想定义一个规则对数据进行校验
         rules: {
             age: {
                 validate: age => age > 18,
                 message: '未满十八岁,不允许通行'
-            }
-        },
-        methods: {
-            handleClick() {
-                this.show = !this.show;
-            }
+            },
+            name: {
+                validate: name => name.length <= 3,
+                message: 'name to short'
+            },
         },
 
         template: `
         <div>name: {{name}},age:{{age}}</div>
-            `,
-    });
-    app.mixin({
-        created() {
-            console.log('mixin ready');
-            for (let key in this.$options.rules) {
-                const item = this.$options.rules[key]
-                console.log(this); //获取到实例
-                console.log(key, item);
-            }
-            // console.log(this.$options.rules);
-        },
-    })
+            `,});
+
+    // 定义插件
+    const validatorPlugin = (app, options) => {
+        app.mixin({
+            created() {
+                console.log('mixin ready');
+                for (let key in this.$options.rules) {
+                    const item = this.$options.rules[key];
+                    // value 是新接收的age的值
+                    this.$watch(key, (value) => {
+                        console.log(value);
+                        // 对age作校验
+                        const result = item.validate(key);
+                        if (!result) {
+                            console.log(item.message);
+                        }
+                    })
+                    // console.log(this); //获取到实例
+                    // console.log(key, item);
+                }
+                // console.log(this.$options.rules);
+            },
+        })
+    }
+    // 使用定义的插件
+    app.use(validatorPlugin)
     const vm = app.mount("#wei");
 </script>
+```
+
+
+
+### 第2章CompositionAPI
+
+```
+vue3提供的新的语法api CompositionAPI
+```
+
+#### CompositionAPI的setup方法初了解
+
+```vue
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 34</title>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+</head>
+
+<body>
+    <div id="wei">
+    </div>
+    <div id="hello">
+    </div>
+</body>
+
+<script>
+    // compositionAPI  代码维护性的问题 提高维护性
+    const app = Vue.createApp({
+        data() {
+        },
+
+        methods: {
+            test() {
+                // 看看组件上面都挂载了什么
+                console.log(this.$options);
+            }
+        },
+        mounted() {
+            this.test();
+        },
+
+        template: `
+        <div @click="handleClick">name: {{name}}</div>
+            `,
+        // created 实例被完全初始化之前 props为外部传过来的属性。 context是上下文
+        // 会直接暴露在外部,外边的template可以直接使用
+        // setup 没法调用外部的方法。拿不到app实例
+        // setup 是compositionAPI最核心的东西
+        setup(props,context) {
+            // this.test(); 调用不了
+            return{
+                name:'yang',
+                handleClick:()=>{
+                    alert("hi")
+                }
+            }
+        }
+    });
+    const vm = app.mount("#wei");
+</script>
+
+</html>
 ```
 
