@@ -2811,3 +2811,60 @@ vue3提供的新的语法api CompositionAPI
 </html>
 ```
 
+
+
+#### ref 和 reactive
+
+```vue
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 35</title>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+</head>
+
+<body>
+    <div id="wei">
+    </div>
+    <div id="hello">
+    </div>
+</body>
+
+<script>
+    // compositionAPI  代码维护性的问题 提高维护性
+    // 原理,通过 proxy 对数据进行封装,当数据变化时,触发模板等内容更新,
+    // ref 处理基础类型的数据,,
+    // reactive 处理非基础类型的数据,,
+    const app = Vue.createApp({
+        data() {},
+
+        methods: {},
+        template: `
+        <div>name: {{value}}</div>
+            `,
+        setup(props, context) {
+            // ref 直接从 Vue里面引入就行
+            const {ref} = Vue;
+            // 通过proxy,把 'yang' 变成 ({value:'chen'}) 这样一个响应式引用
+            let name = ref('yang');
+            setTimeout(() => {
+                // 这里得用name.value
+                name.value = 'chen'
+            }, 2000);
+            return {
+                name
+            }
+        }
+    });
+    const vm = app.mount("#wei");
+</script>
+
+</html>
+```
+
