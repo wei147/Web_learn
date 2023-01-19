@@ -2816,14 +2816,7 @@ vue3提供的新的语法api CompositionAPI
 #### ref 和 reactive
 
 ```vue
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>lesson 35</title>
+ <title>lesson 35</title>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
@@ -2846,25 +2839,33 @@ vue3提供的新的语法api CompositionAPI
 
         methods: {},
         template: `
-        <div>name: {{value}}</div>
+        <div>name: {{nameObj[0]}}</div>
             `,
+        // <div>name: {{nameObj.name}}</div>
         setup(props, context) {
             // ref 直接从 Vue里面引入就行
-            const {ref} = Vue;
-            // 通过proxy,把 'yang' 变成 ({value:'chen'}) 这样一个响应式引用
-            let name = ref('yang');
+            // const {ref} = Vue;
+            // // 通过proxy,把 'yang' 变成 proxy({value:'chen'}) 这样一个响应式引用
+            // let name = ref('yang');
+            // setTimeout(() => {
+            //     // 这里得用name.value
+            //     name.value = 'chen'
+            // }, 2000);
+            // return {name }
+
+            // 非基础型数据的处理
+            const {
+                reactive
+            } = Vue;
+            // 通过proxy,把 对象{name:'dell'} 变成 proxy({name:'chen'}) 响应式引用
+            const nameObj = reactive(['小小骑士阿木木']); //也可以是数组
+            // const nameObj = reactive({name: 'yang'});
             setTimeout(() => {
-                // 这里得用name.value
-                name.value = 'chen'
+                nameObj[0] = 'chen'
             }, 2000);
             return {
-                name
-            }
-        }
-    });
+                nameObj
+            }}});
     const vm = app.mount("#wei");
-</script>
-
-</html>
 ```
 
