@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hello world</title>
+    <script src="https://unpkg.com/vue@next"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<div id="root">
+    <template>
+        <div>
+            <input type="file" @change="onFileChange">
+            <button @click="uploadFile">上传</button>
+            <img v-if="imageUrl" :src="imageUrl" alt="Uploaded Image">
+        </div>
+    </template>
+</div>
+
+<script>
+    import axios from 'axios'
+
+    export default {
+        data() {
+            return {
+                file: null,
+                imageUrl: null
+            }
+        },
+        methods: {
+            onFileChange(event) {
+                this.file = event.target.files[0]
+            },
+            async uploadFile() {
+                const formData = new FormData()
+                formData.append('image', this.file)
+                try {
+                    const response = await axios.post('https://example.com/upload', formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    })
+                    this.imageUrl = response.data.url
+                } catch (error) {
+                    console.error(error)
+                }
+            }
+        }
+    }
+</script>
+
+</html>

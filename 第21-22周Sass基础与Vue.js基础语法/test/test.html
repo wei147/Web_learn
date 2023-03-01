@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hello world</title>
+    <script src="https://unpkg.com/vue@next"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+
+<body>
+    <div id="wei">
+        <el-input v-model="form.img" auto-complete="off" disabled></el-input> <!-- 显示路径 -->
+        <input accept="image/*" name="upimage" @change="upload" id="upload_file" type="file"> <!-- 选择图片 -->
+    </div>
+</body>
+<script>
+    // .mount("#root"); 的意思是在id为root上使用vue
+    Vue.createApp({
+        data() {
+            return {
+                form: {
+                    img: ""
+                }
+            };
+        },
+        methods: {
+            upload(e) {
+                let file = e.target.files[0];
+                let param = new FormData();
+                //通过append向form对象添加数据
+                param.append("file", file);
+                let config = {
+                    headers: {
+                        'Content-Type': 'multipart/form-data' //必须要指定
+                    }
+                };
+                axios.post("/ocr/upload/file:8000", param, config).then(response => {
+                    console.log(response)
+                    this.form.img = response;
+                });
+            }
+        },
+        // mounted表示页面加载完成,我就会执行
+        mounted() {},
+        // 以template 的内容作为显示
+        // template: '<div>hello world</div>'
+    }).mount("#wei");
+</script>
+
+</html>
