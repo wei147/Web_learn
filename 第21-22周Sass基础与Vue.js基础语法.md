@@ -3047,3 +3047,92 @@ export default {
 </style>
 ```
 
+#### Vue router 了解
+
+```js
+import {
+  createRouter,
+  createWebHashHistory
+} from 'vue-router'
+import HomeView from '../views/HomeView.vue'
+
+const routes = [{
+    path: '/',
+    name: 'home',
+    component: HomeView
+  },
+  {
+    path: '/about',
+    name: 'about',
+    // lazy 懒加载。只有在真正访问到这个页面的时候才会加载相关代码
+    component: () => import( /* webpackChunkName: "about" */ '../views/AboutView.vue')
+  },
+  {
+    path: '/other',
+    name: 'other',
+    // lazy 懒加载。只有在真正访问到这个页面的时候才会加载相关代码Other
+    component: () => import( /* webpackChunkName: "about" */ '../views/OtherView.vue')
+  }
+]
+
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes
+})
+
+export default router
+```
+
+
+
+#### Vue的数据存储
+
+```
+Vue的数据存储方案  Vuex
+```
+
+```js
+import { createStore } from 'vuex'
+
+// VueX 数据管理框架
+// Vuex 创建了一个全局唯一的仓库,用来存放全局的数据
+export default createStore({
+  state: {
+    name:"wei"
+  },
+  getters: {
+  },
+  mutations: {
+  },
+  actions: {
+  },
+  modules: {
+  }})
+```
+
+```vue
+<template>
+  <div class="home">
+    <h4>{{myName}}</h4>
+    <img alt="Vue logo" src="../assets/logo.png">
+    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  </div>
+</template>
+
+<script>
+// @ is an alias to /src
+import HelloWorld from '@/components/HelloWorld.vue'
+
+export default {
+  name: 'HomeView',
+  // 获取全局仓库中创建的数据
+  computed:{
+    myName(){
+      return this.$store.state.name
+    }},
+  components: {
+    HelloWorld
+  }}
+</script>
+```
+

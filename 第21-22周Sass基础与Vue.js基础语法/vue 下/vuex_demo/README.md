@@ -1,7 +1,4 @@
-# my_orc
-调用ocr的api实现图文文字识别
-
-# about_ocr
+# vuex_demo
 
 ## Project setup
 ```
