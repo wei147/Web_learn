@@ -10,16 +10,15 @@ const routes = [{
     component: HomeView
   },
   {
-    path: '/about',
-    name: 'about',
-    // lazy 懒加载。只有在真正访问到这个页面的时候才会加载相关代码
-    component: () => import( /* webpackChunkName: "about" */ '../views/AboutView.vue')
+    path: '/log',
+    name: 'log',
+    // lazy 懒加载。只有在真正访问到这个页面的时候才会加载相关代码Other
+    component: () => import( /* webpackChunkName: "about" */ '../views/LogView.vue')
   },
   {
-    path: '/other',
-    name: 'other',
-    // lazy 懒加载。只有在真正访问到这个页面的时候才会加载相关代码Other
-    component: () => import( /* webpackChunkName: "about" */ '../views/OtherView.vue')
+    path: '/log-detail',
+    name: '/log-detail',
+    component: () => import( /* webpackChunkName: "about" */ '../views/LogDetailView.vue')
   }
 ]
 
