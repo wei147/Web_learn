@@ -43,7 +43,7 @@
                   <i class=icon-store></i>
                   <span>Store</span> </a>
 
-                <a class="banner__download-item" href="" target=_blank>
+                <a class="banner__download-item" href="http://120.78.161.175/file/PsAndUi/index.html" target=_blank>
                   <i class=icon-windows></i>
                   <span>UI & PS</span> </a>
 
@@ -53,8 +53,9 @@
                                    href=https://filehelper.weixin.qq.com/ target=_blank> <i class=icon-transfer></i>
                                    <span>文件传输助手<br>网页版</span> </a>  -->
               </div>
-              <div class=banner__entry-extra-wrp> <a href="" target=_blank
-                  class="banner__entry-extra banner__entry-extra_watch">
+              <div class=banner__entry-extra-wrp> <a
+                  href="http://120.78.161.175/file/%E9%99%84%E4%BB%B6%E7%AE%80%E5%8E%86-%E9%AD%8F%E5%9C%9F%E9%87%91-Java%E5%90%8E%E7%AB%AF-23%E5%B9%B4%E5%BA%94%E5%B1%8A%E7%94%9F.pdf"
+                  target=_blank class="banner__entry-extra banner__entry-extra_watch">
                   <i class=icon-resume></i>
                   我的简历 </a> <a href="" target=_blank class="banner__entry-extra ">
                   <i class=icon-attestation></i>学籍认证报告</a>
@@ -71,7 +72,9 @@
               <li> <a href="" target=_blank> <i class=icon-mini-program></i>OA系统 </a> </li>
               <li> <a href="" target=_blank> <i class=icon-finder></i> OA系统-后台 </a></li>
 
-              <li> <a href="" target=_blank> <i class=icon-mini-ocr></i> OCR文字识别 </a> </li>
+              <li>
+                <router-link to="/ocr" target=_blank> <i class=icon-mini-ocr></i> OCR文字识别 </router-link>
+              </li>
               <li> <a href="" target=_blank> <i class=icon-mini-store></i> 生成二维码 </a>
               </li>
               <li> <a href="" target=_blank> 硬件平台 </a> </li>
@@ -96,10 +99,10 @@
     name: 'HomeView',
     data() {
       return {
-        backgroundColor: "#2aae67",
-        colorList: ["#2aae67", "#22a2c3", "#f07c82", "#7a7374", "#648e93", "#41b349"],
-        colorNameList: ["微信绿", "海青", "香叶红", "锌灰", "晚波蓝", "玉髓绿"],
-        colorName: '微信绿',
+        backgroundColor: "#22a2c3",
+        colorList: ["#22a2c3", "#2aae67", "#f07c82", "#7a7374", "#648e93", "#41b349"],
+        colorNameList: ["海青", "微信绿", "香叶红", "锌灰", "晚波蓝", "玉髓绿"],
+        colorName: '海青',
       }
     },
     components: {

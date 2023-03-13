@@ -1,4 +1,17 @@
 <template>
+  <div class="flag">
+    <el-menu :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" @select="handleSelect"
+      background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+      <el-menu-item index="2">
+        <router-link to="/">首页</router-link>
+      </el-menu-item>
+      <el-menu-item index="2">
+        <router-link to="/log">生成二维码</router-link>
+      </el-menu-item>
+      <el-menu-item index="1">OCR文字识别</el-menu-item>
+    </el-menu>
+  </div>
+  <!-- 内容区 -->
   <!--  col-sm-平板--屏幕宽度等于或者大于576px
         col-md-桌面显示屏--屏幕宽度大于或者等于768px
         col-lg-大桌面显示器--屏幕宽度大于或者等于992px
@@ -40,9 +53,7 @@
     </el-row>
   </div>
 
-
 </template>
-
 <script>
   import axios from 'axios'
   export default {
@@ -52,12 +63,18 @@
         text: '',
         limit: 1,
         loading: false,
-        show: true
-      }
+        show: true,
+
+        activeIndex: '1',
+        activeIndex2: '1'
+      };
     },
-    //注册局部组件
-    components: {},
     methods: {
+      handleSelect(key, keyPath) {
+        console.log(key, keyPath);
+      },
+
+      // ocr method
       //通过onchanne触发方法获得文件列表
       handleChange(file, fileList) {
         this.fileList = fileList;
@@ -165,13 +182,19 @@
       open5() {
         this.$message.error('请求超时，请稍后重试');
       },
-    
-    },
+    }
   }
 </script>
-
-
 <style>
+  .flag {
+    position: sticky;
+    /* 新属性sticky */
+    top: 0;
+    /* 距离页面顶部距离 */
+    z-index: 100
+  }
+
+  /* from ocr */
   /* 屏幕在500px的时候 */
   @media screen and (max-width: 700px) {
     .el-upload__text {

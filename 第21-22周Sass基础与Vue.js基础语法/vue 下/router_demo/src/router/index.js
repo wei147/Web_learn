@@ -17,8 +17,13 @@ const routes = [{
   },
   {
     path: '/log-detail',
-    name: '/log-detail',
+    name: 'log-detail',
     component: () => import( /* webpackChunkName: "about" */ '../views/LogDetailView.vue')
+  },
+  {
+    path: '/ocr',
+    name: 'ocr',
+    component: () => import( /* webpackChunkName: "about" */ '../views/OCRView.vue')
   }
 ]
 
