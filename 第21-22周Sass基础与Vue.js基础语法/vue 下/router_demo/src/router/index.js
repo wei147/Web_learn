@@ -24,6 +24,11 @@ const routes = [{
     path: '/ocr',
     name: 'ocr',
     component: () => import( /* webpackChunkName: "about" */ '../views/OCRView.vue')
+  },
+  {
+    path: '/store',
+    name: 'store',
+    component: () => import( /* webpackChunkName: "about" */ '../views/StoreView.vue')
   }
 ]
 

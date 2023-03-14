@@ -10,9 +10,9 @@
       </script> -->
       <div class=wrap>
         <!-- 回到顶部 -->
-        <el-backtop target=".wrap">
+        <!-- <el-backtop target=".wrap">
           <div class="upFlag">UP</div>
-        </el-backtop>
+        </el-backtop> -->
         <div class=content>
           <div id=upgrade_notice class=upgrade__notice>为了最好的体验，请升级您的浏览器</div>
           <div class=banner>
@@ -39,9 +39,9 @@
                   <i class=icon-github></i>
                   <span>Github</span> </a>
 
-                <a class="banner__download-item" href="">
+                <router-link class="banner__download-item" to="/store">
                   <i class=icon-store></i>
-                  <span>Store</span> </a>
+                  <span>Store</span> </router-link>
 
                 <a class="banner__download-item" href="http://120.78.161.175/file/PsAndUi/index.html" target=_blank>
                   <i class=icon-windows></i>
@@ -100,8 +100,8 @@
     data() {
       return {
         backgroundColor: "#22a2c3",
-        colorList: ["#22a2c3", "#2aae67", "#f07c82", "#7a7374", "#648e93", "#41b349"],
-        colorNameList: ["海青", "微信绿", "香叶红", "锌灰", "晚波蓝", "玉髓绿"],
+        colorList: ["#22a2c3", "#2aae67", "#f07c82", "#7a7374", "#648e93", "#2177b8"],
+        colorNameList: ["海青", "微信绿", "香叶红", "锌灰", "晚波蓝", "虹蓝"],
         colorName: '海青',
       }
     },
@@ -110,7 +110,7 @@
     },
     methods: {
       changeColor() {
-        const num = Math.floor((Math.random() * this.colorList.length) - 1);
+        const num = Math.floor((Math.random() * this.colorList.length));
         this.backgroundColor = this.colorList[num]
         this.colorName = this.colorNameList[num]
         console.log("颜色数组长度是: " + this.colorList.length);
