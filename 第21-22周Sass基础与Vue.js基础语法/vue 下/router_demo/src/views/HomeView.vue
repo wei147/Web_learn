@@ -56,9 +56,11 @@
               <div class=banner__entry-extra-wrp> <a
                   href="http://120.78.161.175/file/%E9%99%84%E4%BB%B6%E7%AE%80%E5%8E%86-%E9%AD%8F%E5%9C%9F%E9%87%91-Java%E5%90%8E%E7%AB%AF-23%E5%B9%B4%E5%BA%94%E5%B1%8A%E7%94%9F.pdf"
                   target=_blank class="banner__entry-extra banner__entry-extra_watch">
-                  <i class=icon-resume></i>
-                  我的简历 </a> <a href="" target=_blank class="banner__entry-extra ">
-                  <i class=icon-attestation></i>学籍认证报告</a>
+                  <i class=icon-resume></i>我的简历 </a>
+
+                <a @click="centerDialogVisible = true" class="banner__entry-extra ">
+                  <i class=icon-attestation></i>学籍认证报告
+                </a>
               </div>
             </div>
             <div class=color_change> <a href="">{{colorName}}</a> <a @click="changeColor">随机颜色</a> </div>
@@ -89,24 +91,48 @@
     </div>
     <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
   </div>
+
+  <!-- 利用对话框展示专科和本科的学信网在线验证报告 -->
+  <el-dialog title="关于我的两份学信网在线认证" v-model="centerDialogVisible" width="30%">
+    <span></span>
+    <br>
+    <el-button type="primary" @click="centerDialogVisible = false">
+      <el-icon>
+        <ArrowLeftBold />
+      </el-icon>
+      全日制 专科
+    </el-button>
+    <el-button type="primary" @click="centerDialogVisible = false">全日制 本科<el-icon>
+        <ArrowRightBold />
+      </el-icon>
+    </el-button>
+  </el-dialog>
 </template>
 
 <script>
   // @ is an alias to /src
   // import HelloWorld from '@/components/HelloWorld.vue'
 
+  import {
+    ArrowLeftBold,
+    ArrowRightBold
+  } from '@element-plus/icons-vue'
   export default {
     name: 'HomeView',
     data() {
       return {
-        backgroundColor: "#22a2c3",
-        colorList: ["#22a2c3", "#2aae67", "#f07c82", "#7a7374", "#648e93", "#2177b8"],
-        colorNameList: ["海青", "微信绿", "香叶红", "锌灰", "晚波蓝", "虹蓝"],
-        colorName: '海青',
+        backgroundColor: "#2177b8",
+        colorList: ["#2177b8", "#22a2c3", "#2aae67", "#f07c82", "#7a7374", "#648e93"],
+        colorNameList: ["虹蓝", "海青", "微信绿", "香叶红", "锌灰", "晚波蓝"],
+        colorName: '虹蓝',
+
+        // 弹出框
+        centerDialogVisible: false
       }
     },
     components: {
-      // HelloWorld
+      ArrowLeftBold,
+      ArrowRightBold
     },
     methods: {
       changeColor() {

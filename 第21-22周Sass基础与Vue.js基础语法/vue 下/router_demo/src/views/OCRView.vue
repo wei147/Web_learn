@@ -1,61 +1,68 @@
 <template>
-  <div class="flag">
-    <el-menu :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" @select="handleSelect"
-      background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
-      <el-menu-item index="2">
-        <router-link to="/">首页</router-link>
-      </el-menu-item>
-      <el-menu-item index="2">
-        <router-link to="/log">生成二维码</router-link>
-      </el-menu-item>
-      <el-menu-item index="1">OCR文字识别</el-menu-item>
-    </el-menu>
-  </div>
-  <!-- 内容区 -->
-  <!--  col-sm-平板--屏幕宽度等于或者大于576px
+  <div class="OCR">
+    <div class="flag">
+      <el-menu :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" @select="handleSelect"
+        background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+        <el-menu-item index="2">
+          <router-link to="/">首页</router-link>
+        </el-menu-item>
+        <el-menu-item index="3">
+          <router-link to="/log">生成二维码</router-link>
+        </el-menu-item>
+        <el-menu-item index="1">OCR文字识别</el-menu-item>
+      </el-menu>
+    </div>
+    <!-- 内容区 -->
+    <!--  col-sm-平板--屏幕宽度等于或者大于576px
         col-md-桌面显示屏--屏幕宽度大于或者等于768px
         col-lg-大桌面显示器--屏幕宽度大于或者等于992px
         col-xl-超大屏幕显示器--屏幕宽度大于等于1200px 
   -->
-  <div style="height:100%;width:100%">
-    <el-row :gutter="10" type="flex" class="row-bg el-row-two" justify="center">
-      <el-col :xs="6" :sm="6" :md="6" :xl="6">
-        <div class="grid-content bg-purple">
-          <el-upload class="upload-demo" drag action=" " list-type="picture" ref="upload" :on-change="handleChange"
-            :auto-upload="false" :limit="limit" :on-exceed="handleExceed" :multiple="false">
-            <i class="el-icon-upload"></i>
-            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-            <div class="el-upload__tip">只能上传jpg/png文件,且不超过2M</div>
-          </el-upload>
-        </div>
-      </el-col>
-      <el-col :xs="3" :sm="3" :md="3" :xl="4">
-        <div class="grid-content bg-purple-light">
-          <div class="b-button-div">
-            <div class="s-button-div">
-              <el-button style="margin-top: 10px;" type="primary" class="s-button" @click="submitUpload"
-                :loading="loading">
-                提取文本
-              </el-button>
+    <div style="height:100%;width:100%">
+      <el-row :gutter="10" type="flex" class="row-bg el-row-two" justify="center">
+        <el-col :xs="6" :sm="6" :md="6" :xl="6">
+          <div class="grid-content bg-purple">
+            <el-upload class="upload-demo" drag action=" " list-type="picture" ref="upload" :on-change="handleChange"
+              :auto-upload="false" :limit="limit" :on-exceed="handleExceed" :multiple="false">
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+              <div class="el-upload__tip">只能上传jpg/png文件,且不超过2M</div>
+            </el-upload>
+          </div>
+        </el-col>
+        <el-col :xs="3" :sm="3" :md="3" :xl="4">
+          <div class="grid-content bg-purple-light">
+            <div class="b-button-div">
+              <div class="s-button-div">
+                <el-button style="margin-top: 10px;" type="primary" class="s-button" @click="submitUpload"
+                  :loading="loading">
+                  提取文本<el-icon>
+                    <ArrowRightBold />
+                  </el-icon>
+                </el-button>
+              </div>
             </div>
           </div>
-        </div>
-      </el-col>
-      <el-col :xs="6" :sm="6" :md="6" :xl="6">
-        <div class="grid-content bg-purple">
-          <div>
-            <el-input type="textarea" :show-word-limit="true" :rows="10" placeholder="提取文本内容" v-model="text">
-            </el-input>
-            <el-button type="text" class="copyText" :disabled="show" @click="copyText(text)">复制</el-button>
+        </el-col>
+        <el-col :xs="6" :sm="6" :md="6" :xl="6">
+          <div class="grid-content bg-purple">
+            <div>
+              <el-input type="textarea" :show-word-limit="true" :rows="10" placeholder="提取文本内容" v-model="text">
+              </el-input>
+              <el-button type="text" class="copyText" :disabled="show" @click="copyText(text)">复制</el-button>
+            </div>
           </div>
-        </div>
-      </el-col>
-    </el-row>
+        </el-col>
+      </el-row>
+    </div>
   </div>
 
 </template>
 <script>
   import axios from 'axios'
+  import {
+    ArrowRightBold
+  } from '@element-plus/icons-vue'
   export default {
     data() {
       return {
@@ -68,6 +75,9 @@
         activeIndex: '1',
         activeIndex2: '1'
       };
+    },
+    components: {
+      ArrowRightBold
     },
     methods: {
       handleSelect(key, keyPath) {
@@ -134,26 +144,20 @@
       handleExceed() {
         this.open3()
       },
-      copyText(copytext) {
+      copyText() {
         if (this.text != '') {
-          const text = document.createElement('textarea'); // 创建节点
-          text.setAttribute('readonly', 'readonly');
-          text.value = copytext; // 赋值
-          document.body.appendChild(text); // 插入节点
-          text.setSelectionRange(0, text.value.length);
-          text.select(); // 选中节点
-          document.execCommand('copy'); // 执行浏览器复制方法
-          if (document.body.removeChild(text)) {
-            this.$message({
-              type: 'success',
-              message: '复制成功'
+          this.$copyText(this.text).then(() => {
+              this.$message({
+                type: 'success',
+                message: '复制成功'
+              })
+            },
+            () => {
+              this.$message({
+                type: 'error',
+                message: '复制失败'
+              })
             })
-          } else {
-            this.$message({
-              type: 'error',
-              message: '复制失败'
-            })
-          }
         } else {
           this.$message('暂无文本可复制');
         }
@@ -240,8 +244,8 @@
   }
 
   .grid-content {
-    /* background-color: rgb(44, 143, 121); */
-    background-color: rgb(255, 255, 255);
+    /* background-color: rgb(239, 239, 239); */
+    /* background-color: rgb(255, 255, 255); */
     border-radius: 4px;
     min-height: 240px;
     min-width: 60px;
