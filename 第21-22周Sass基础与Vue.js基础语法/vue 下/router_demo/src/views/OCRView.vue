@@ -1,7 +1,7 @@
 <template>
   <div class="OCR">
     <div class="flag">
-      <el-menu :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" @select="handleSelect"
+      <el-menu :default-active="activeIndex2" mode="horizontal" @select="handleSelect"
         background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
         <el-menu-item index="2">
           <router-link to="/">首页</router-link>
@@ -189,7 +189,8 @@
     }
   }
 </script>
-<style>
+
+<style scoped>
   .flag {
     position: sticky;
     /* 新属性sticky */

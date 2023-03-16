@@ -1,5 +1,5 @@
 <template>
-  <div class="flag">
+  <div class="detail-flag">
     <el-menu :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" @select="handleSelect"
       background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
       <el-menu-item index="2">
@@ -50,8 +50,9 @@
     }
   }
 </script>
-<style>
-  .flag {
+
+<style scoped>
+  .detail-flag {
     position: sticky;
     /* 新属性sticky */
     top: 0;
@@ -60,7 +61,7 @@
   }
 
   /* from wechat */
-  body,
+  /* body,
   h1,
   h2,
   h3,
@@ -68,13 +69,13 @@
   ul {
     padding: 0;
     margin: 0
-  }
+  } */
 
-  li,
+  /* li,
   ul {
     list-style: none;
     margin: 0
-  }
+  } */
 
   body,
   html {

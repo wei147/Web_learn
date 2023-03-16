@@ -1,7 +1,7 @@
 <template>
   <div class="store">
     <div class="NavigationBbar">
-      <el-menu :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" @select="handleSelect"
+      <el-menu :default-active="activeIndex2" class="my-menu" mode="horizontal" @select="handleSelect"
         background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
         <el-menu-item index="2">
           <router-link to="/">首页</router-link>
@@ -25,23 +25,23 @@
       <div class="row">
         <div class="col home-left-column left-column" id="main-left-cloumn">
 
-          <div class="nav-tab" id="cate0"><i class="fa fa-reorder"></i> All Store</div>
+          <div class="nav-tab" id="cate0"><i class="fa fa-reorder"></i> &nbsp;All Store</div>
           <!-- 修改右侧的导航条 -->
           <div class="sidebar-box gallery-list">
             <div class="design" id="cate1">
-              <div class="navto-nav"><i class="fa fa-external-link"></i> &nbsp; 软件推荐</div>
+              <div class="navto-nav"><i></i> &nbsp; 软件推荐</div>
             </div>
             <div class="design" id="cate2">
-              <div class="navto-nav"><i class="fa fa-external-link"></i> &nbsp; 浏览器插件</div>
+              <div class="navto-nav"><i></i> &nbsp; 浏览器插件</div>
             </div>
             <div class="design" id="cate3">
-              <div class="navto-nav"><i class="fa fa-external-link"></i> &nbsp; 网课影视</div>
+              <div class="navto-nav"><i></i> &nbsp; 网课影视</div>
             </div>
             <div class="design" id="cate4">
-              <div class="navto-nav"><i class="fa fa-external-link"></i> &nbsp; 特色网站</div>
+              <div class="navto-nav"><i></i> &nbsp; 特色网站</div>
             </div>
             <div class="design" id="cate5">
-              <div class="navto-nav"><i class="fa fa-external-link"></i> &nbsp; 其他</div>
+              <div class="navto-nav"><i></i> &nbsp; 其他</div>
             </div>
           </div>
 
@@ -60,7 +60,7 @@
               <strong>包含IDEA、pycharm开发工具</strong>
             </a>
 
-            <a class="item-top item-1" href="">
+            <a class="item-top item-1" href="https://www.aliyundrive.com/s/LMdWXE67Gna">
               <h4>Adobe</h4>
               <img class="codeicon codeicon-36" alt="css" height="32" width="32"
                 src="../assets/img/store/software/adobeX.svg">
@@ -130,21 +130,21 @@
             <h2><i class="fa fa-list"></i> 浏览器插件</h2>
 
 
-            <a class="item-top item-1" href="">
+            <a class="item-top item-1" href="https://www.aliyundrive.com/s/66kzwu6sa1v">
               <h4>TamperMonkey</h4>
               <img class="codeicon codeicon-36" alt="TamperMonkey" height="36" width="36"
                 src="../assets/img/store/plug-in/TamperMonkey.jpg">
               <strong>最受欢迎的浏览器扩展。提供免费看会员视频的教程</strong>
             </a>
 
-            <a class="item-top item-1" href="">
+            <a class="item-top item-1" href="https://chrome.zzzmh.cn/info/cfhdojbkjhnklbpkdaibdccddilifddb">
               <h4>Adblock Plus</h4>
               <img class="codeicon codeicon-36" alt="Adblock Plus" height="36" width="36"
                 src="../assets/img/store/plug-in/AdblockPlus.jpg">
               <strong>享受没有恼人广告的网络世界</strong>
             </a>
 
-            <a class="item-top item-1" href="">
+            <a class="item-top item-1" href="https://chrome.zzzmh.cn/info/dbfmnekepjoapopniengjbcpnbljalfg">
               <h4>Infinity</h4>
               <img class="codeicon codeicon-36" alt="Infinity" height="36" width="36"
                 src="../assets/img/store/plug-in/Infinity.jpg">
@@ -172,14 +172,14 @@
             </a>
 
             <a class="item-top item-1" href="https://www.aliyundrive.com/s/bS6jtsi5Xs3">
-              <h4>TypeScript</h4>
+              <h4>TypeScript入门</h4>
               <img class="codeicon codeicon-36" alt="iconfont" height="36" width="36"
                 src="../assets/img/store/video-resources/TypeScript.png">
-              <strong>下一代前端开发语言之一</strong>
+              <strong>慕课-下一代前端开发语言</strong>
             </a>
 
-            <a class="item-top item-1">
-              <h4>Top250</h4> 
+            <a class="item-top item-1" href="https://www.aliyundrive.com/s/jHQQ1w4V4Bv">
+              <h4>Top250</h4>
               <img class="codeicon codeicon-36" alt="iconfont" height="36" width="36"
                 src="../assets/img/store/video-resources/DouBantop250.jpg">
               <strong>豆瓣评分最高的250部电影</strong>
@@ -296,9 +296,20 @@
     },
   }
 </script>
-<style>
+<style scoped>
+  .container {
+    /* 调整内容区的字距 */
+    letter-spacing: 0.2px;
+
+  }
+
   .whereUsePhone {
     display: none;
+  }
+
+  /* 不知道为什么这个页面的顶部导航条高度缺失。所以指定了 */
+  .my-menu {
+    height: 58.4px;
   }
 
   .NavigationBbar {
@@ -319,7 +330,8 @@
     .home-left-column {
       display: none;
     }
-    .whereUsePhone{
+
+    .whereUsePhone {
       display: block;
     }
   }
@@ -460,7 +472,7 @@
   body {
     margin: 0;
     /* font-size: 1.2em; */
-    font: 14px/1.6 -apple-system-font, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei UI, Microsoft YaHei, Arial, sans-serif;
+    font: -apple-system-font, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei UI, Microsoft YaHei, Arial, sans-serif;
     /* font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Noto Sans CJK SC, WenQuanYi Micro Hei, Arial, sans-serif; */
   }
 
@@ -487,7 +499,7 @@
 
   li,
   ol,
-  p{
+  p {
     line-height: 1.5em
   }
 
@@ -522,7 +534,9 @@
     padding-left: 4px;
     font-weight: bold;
     display: block;
-    font-size: 1.2em;
+    /* font-size: 1.2em; */
+    /* 字体大小会被影响,所以指定了具体的大小 */
+    font-size: 16.8px;
     line-height: 2.6em;
     /* font-family: proxima-nova, 'Helvetica Neue', Helvetica, Arial, sans-serif; */
     font-family: -apple-system-font, BlinkMacSystemFont, Helvetica Neue, PingFang SC, micross, monospace;
@@ -573,10 +587,6 @@
     height: 29px;
     line-height: 29px;
     overflow: hidden
-  }
-
-  .article-body {
-    padding: 0
   }
 
   .design a {
@@ -815,7 +825,7 @@
     border-bottom: 1px solid #efefef
   }
 
-  .design{
+  .design {
     margin: 2px 0 0 0
   }
 

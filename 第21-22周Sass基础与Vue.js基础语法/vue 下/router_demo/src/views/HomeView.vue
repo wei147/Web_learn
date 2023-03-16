@@ -21,14 +21,25 @@
               <div class=banner__logo></div>
               <div class=banner__update-log>
                 <ul class=banner__update-list>
-                  <li>
+                  <li v-for="item in result.topThree" :key="item.flag">
                     <router-link class=banner__update-content to="/log-detail">
-                      新增 日志页面 element-ui实现</router-link> <span class=banner__updata-time>03-12</span>
+                      {{item.title}}</router-link>
+                    <span class=banner__updata-time>{{item.time}}</span>
+                  </li>
+
+                  <!-- <li>
+                    <router-link class=banner__update-content to="/log-detail">
+                      新增 日志页面 element-ui实现</router-link> 
+                      <span class=banner__updata-time>03-12</span>
                   </li>
                   <li> <a class=banner__update-content href=""><span>
-                        更新 实现随机切换背景颜色</span></a> <span class=banner__updata-time>03-11</span> </li>
+                        更新 实现随机切换背景颜色</span></a> 
+                        <span class=banner__updata-time>03-11</span> </li>
+
                   <li> <a class=banner__update-content>
-                      新增 OCR文字识别web应用 </a> <span class=banner__updata-time>03-09</span> </li>
+                      新增 OCR文字识别web应用 </a> 
+                      <span class=banner__updata-time>03-09</span>
+                  </li> -->
                 </ul>
                 <router-link class=banner__update-more to="/log">一些公告</router-link>
                 <!-- <a class=banner__update-more href="">一些公告</a> -->
@@ -71,16 +82,16 @@
               <li> <a href="" target=_blank> <i class=icon-wechat-pay></i> 电商项目 </a>
               </li>
               <li> <a href="" target=_blank> <i class=icon-mp></i> 书评网 </a> </li>
-              <li> <a href="" target=_blank> <i class=icon-mini-program></i>OA系统 </a> </li>
-              <li> <a href="" target=_blank> <i class=icon-finder></i> OA系统-后台 </a></li>
+              <!-- <li> <a href="" target=_blank> <i class=icon-mini-program></i>OA系统 </a> </li>
+              <li> <a href="" target=_blank> <i class=icon-finder></i> OA系统-后台 </a></li> -->
 
               <li>
                 <router-link to="/ocr" target=_blank> <i class=icon-mini-ocr></i> OCR文字识别 </router-link>
               </li>
               <li> <a href="" target=_blank> <i class=icon-mini-store></i> 生成二维码 </a>
               </li>
-              <li> <a href="" target=_blank> 硬件平台 </a> </li>
-              <li> <a href="" target=_blank> 官方文档 </a> </li>
+              <!-- <li> <a href="" target=_blank> 其他 </a> </li> -->
+              <li> <a target=_blank> 个人文档 </a> </li>
             </ul>
           </div>
         </div>
@@ -93,19 +104,23 @@
   </div>
 
   <!-- 利用对话框展示专科和本科的学信网在线验证报告 -->
-  <el-dialog title="关于我的两份学信网在线认证" v-model="centerDialogVisible" width="30%">
+  <el-dialog title="关于我的两份学籍在线认证" v-model="centerDialogVisible" width="24%">
     <span></span>
     <br>
-    <el-button type="primary" @click="centerDialogVisible = false">
-      <el-icon>
-        <ArrowLeftBold />
-      </el-icon>
-      全日制 专科
-    </el-button>
-    <el-button type="primary" @click="centerDialogVisible = false">全日制 本科<el-icon>
-        <ArrowRightBold />
-      </el-icon>
-    </el-button>
+    <a href="https://www.chsi.com.cn/xlcx/bg.do?vcode=A0SK8QEDSJZVCYXH" target=_blank>
+      <el-button type="primary" @click="centerDialogVisible = false">
+        <el-icon>
+          <ArrowLeftBold />
+        </el-icon>
+        全日制专科
+      </el-button>
+    </a>&nbsp;&nbsp;
+    <a href="https://www.chsi.com.cn/xlcx/bg.do?vcode=AQQ4EGXJE0BTVMLB" target=_blank>
+      <el-button type="primary" @click="centerDialogVisible = false">全日制本科<el-icon>
+          <ArrowRightBold />
+        </el-icon>
+      </el-button>
+    </a>
   </el-dialog>
 </template>
 
@@ -113,10 +128,16 @@
   // @ is an alias to /src
   // import HelloWorld from '@/components/HelloWorld.vue'
 
+
   import {
     ArrowLeftBold,
     ArrowRightBold
   } from '@element-plus/icons-vue'
+  import axios from 'axios'
+  import {
+    onMounted,
+    reactive
+  } from 'vue'
   export default {
     name: 'HomeView',
     data() {
@@ -126,8 +147,11 @@
         colorNameList: ["虹蓝", "海青", "微信绿", "香叶红", "锌灰", "晚波蓝"],
         colorName: '虹蓝',
 
+        currentNum: 0,
+        previousNum: 1,
+
         // 弹出框
-        centerDialogVisible: false
+        centerDialogVisible: false,
       }
     },
     components: {
@@ -141,78 +165,72 @@
         this.colorName = this.colorNameList[num]
         console.log("颜色数组长度是: " + this.colorList.length);
         console.log("随机数是:" + num + "   颜色名字是: " + this.colorName + "  色值是: " + this.backgroundColor);
-      }
+      },
     },
   }
 </script>
+
+<script setup>
+  let result = reactive({
+    topThree: []
+  });
+  onMounted(async () => {
+    console.log("hi hi ");
+    try {
+      axios.get('http://localhost:8001/record/getTopThree', {})
+        .then(res => {
+          // console.log(res);
+          if (res.data.status == 10000 || res.data.data != null) {
+            result.topThree = res.data.data
+            console.log(result);
+          } else {
+            console.log("获取失败");
+          }
+        })
+    } catch (error) {
+      console.log("发生未知的错误");
+    }
+    return result
+  })
+</script>
+
+
+<!-- /* 避免样式污染  */ -->
+<style scoped>
+  .banner__update-log {
+    padding: 24px 0 0;
+    width: 440px;
+    position: relative
+  }
+
+  .banner__update-log:before {
+    content: "";
+    display: block;
+    border-top: 1px solid hsla(0, 0%, 100%, .3);
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: scaleY(.5);
+    transform-origin: left
+  }
+
+  .banner__update-log li {
+    display: flex;
+    margin-bottom: 10px
+  }
+
+  .banner__update-log li:last-child {
+    margin-bottom: 0
+  }
+
+  .banner__update-log a {
+    color: hsla(0, 0%, 100%, .9)
+  }
+</style>
+
 <style>
   /* 原wechat css */
-  .footer-wrp {
-    height: 115px
-  }
-
-  .footer {
-    position: absolute;
-    text-align: center;
-    color: hsla(0, 0%, 100%, .7);
-    background-color: #fff;
-    padding: 40px 0 32px;
-    width: 100%;
-    bottom: 0
-  }
-
-  .footer__bd {
-    line-height: 1
-  }
-
-  .footer__links {
-    display: inline-flex;
-    font-size: 13px;
-    margin-bottom: 8px;
-    flex-wrap: wrap;
-    padding: 0 24px;
-    justify-content: center;
-    line-height: 1.6
-  }
-
-  .footer a {
-    margin: 0 8px
-  }
-
-  .footer a:link,
-  .footer a:visited {
-    color: rgba(0, 0, 0, .7);
-    text-decoration: none
-  }
-
-  .footer a:hover {
-    color: rgba(0, 0, 0, .7);
-    text-decoration: underline
-  }
-
-  .footer .footer__record {
-    display: block;
-    color: #000 !important;
-    opacity: .5;
-    font-size: 12px;
-    line-height: 17px
-  }
-
-  .footer .footer__record:visited {
-    color: #000
-  }
-
-  .footer__copyright {
-    color: #000;
-    opacity: .5;
-    font-size: 12px;
-    margin-top: 2px;
-    line-height: 17px
-  }
-
-  .graytext {
-    color: rgba(0, 0, 0, .7)
-  }
 
   body,
   h1,
@@ -501,13 +519,6 @@
     overflow: hidden
   }
 
-  .container {
-    width: 968px;
-    margin: 0 auto;
-    padding: 0 10px;
-    text-align: left
-  }
-
   .content {
     background: none;
     margin: 0;
@@ -604,6 +615,8 @@
       /* background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='154' height='48' viewBox='0 0 154 48'%3E  %3Cg fill='%23FFF' fill-rule='evenodd' opacity='.9'%3E    %3Cpath d='M52.629 42.213c3.73-2.706 6.113-6.709 6.113-11.157 0-8.152-7.921-14.76-17.694-14.76-9.77 0-17.693 6.608-17.693 14.76 0 8.153 7.922 14.761 17.693 14.761 2.02 0 3.969-.289 5.776-.809.165-.05.339-.078.52-.078.34 0 .648.104.94.272l3.872 2.24c.109.06.214.11.342.11a.59.59 0 0 0 .59-.59c0-.148-.059-.293-.095-.433l-.798-2.977a1.413 1.413 0 0 1-.062-.376c0-.397.196-.749.496-.963M35.15 28.544a2.21 2.21 0 1 1 0-4.422 2.21 2.21 0 0 1 0 4.422m11.795 0c-1.22 0-2.208-.99-2.208-2.21a2.21 2.21 0 1 1 4.418 0 2.21 2.21 0 0 1-2.21 2.21'/%3E    %3Cpath d='M21.232 0C9.506 0 0 7.93 0 17.712c0 5.338 2.86 10.142 7.336 13.389.36.257.595.678.595 1.155 0 .157-.034.3-.075.451l-.957 3.573c-.044.168-.114.342-.114.518 0 .391.317.708.708.708.154 0 .28-.057.408-.132l4.65-2.687c.349-.2.718-.325 1.126-.325.218 0 .427.032.624.092a25.087 25.087 0 0 0 8.097.944 13.658 13.658 0 0 1-.713-4.341c0-8.921 8.669-16.155 19.364-16.155.387 0 .486.013.867.031C40.317 6.471 31.824 0 21.232 0m-7.077 14.557a2.512 2.512 0 0 1 0-5.025 2.511 2.511 0 0 1 2.51 2.513 2.512 2.512 0 0 1-2.51 2.512m14.154 0a2.511 2.511 0 0 1-2.51-2.512 2.511 2.511 0 0 1 2.51-2.513 2.511 2.511 0 0 1 2.51 2.513 2.511 2.511 0 0 1-2.51 2.512'/%3E    %3Cg transform='translate(70.845 5.408)'%3E      %3Cpath d='M52.878.625l2.839 1.116a70.416 70.416 0 0 1-2.826 8.145V37.67h-2.98V15.846a60.717 60.717 0 0 1-3.288 4.913l-2.288-2.117c3.744-4.905 6.902-11.179 8.543-18.017M68.793.54a176.643 176.643 0 0 1 2.795 5.289h10.735v2.857H55.79V5.83h12.33c-.777-1.43-1.517-2.822-2.047-3.72l2.72-1.57zm-9.804 14.229h20.36v-2.613h-20.36zm0 6.042h20.36v-2.654h-20.36zm3.061 13.133h14.238v-7.01H62.05v7.01zM58.99 24.2v12.45h20.358V24.2H58.99zM7.893 10l2.421 1.377c-.752 1.63-1.267 2.663-2.311 4.418l.024 21.87H5.27l-.024-17.693c-1.128 1.545-1.84 2.447-2.968 3.7l-2.174-2.03C2.93 18.708 6.013 14.095 7.893 10M7.436.67l2.547 1.454c-1.837 3.3-5.012 7.644-7.81 10.777L0 10.896C2.715 7.93 5.765 3.802 7.436.669m3.984 16.975h12.945v-2.657H11.42zm3.192-14.162v6.364h2.559V.545h2.685v9.301h2.559V3.473l2.646.007v8.88H12.085V3.48zm11.996 22.084s-2.111 2.015-2.71 2.53v-7.579h-11.32l-.002 5.86c0 4.221-.942 6.07-2.711 7.983l2.03 1.886c2.758-2.988 3.343-5.362 3.343-9.298v-3.714l5.982-.001s.114 6.504-.086 7.498l1.81 1.691s4.301-3.905 5.625-5.023l-1.96-1.833z'/%3E      %3Cpath d='M32.848 22.844c-1.377-3.323-1.99-5.2-2.825-8.772.411-1.388.81-3.605.966-5.442h4.123c-.206 6.075-.98 10.826-2.264 14.214m1.585 3.186c1.928-4.177 3.025-9.923 3.123-17.401l1.85.003V5.826l-8.02.01c.104-1.55.071-3.324.071-4.308h-2.582c.032 3.98-.412 7.775-.992 10.444-.647 2.976-1.677 5.866-2.822 7.586l2.01 1.798c.575-.91 1.062-1.813 1.664-3.112 1.04 3.777 1.504 4.813 2.784 7.69a47.754 47.754 0 0 1-6.24 9.653l2.18 1.927c1.062-1.314 3.419-4.47 5.597-8.688.98 1.833 3.032 5.038 5.432 8.627l2.174-2.215c-1.95-2.447-4.651-6.193-6.229-9.208'/%3E    %3C/g%3E  %3C/g%3E%3C/svg%3E") */
   }
 
+  /* 为了避免css样式污染已转移到上面 */
+  /* 
   .banner__update-log {
     padding: 24px 0 0;
     width: 440px;
@@ -619,7 +632,7 @@
     left: 0;
     top: 0;
     transform: scaleY(.5);
-    transform-origin: left top
+    transform-origin: left 
   }
 
   .banner__update-log li {
@@ -633,7 +646,7 @@
 
   .banner__update-log a {
     color: hsla(0, 0%, 100%, .9)
-  }
+  } */
 
   .banner__update-content {
     flex: 1;
@@ -937,66 +950,6 @@
     opacity: 1
   }
 
-  .download__btn {
-    width: 256px;
-    height: 70px;
-    margin-bottom: 32px;
-    background: rgba(0, 0, 0, .05);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    padding-left: 24px;
-    box-sizing: border-box;
-    cursor: pointer;
-    overflow: hidden;
-    position: relative
-  }
-
-  .download__btn:before {
-    content: "";
-    display: inline-block;
-    vertical-align: middle;
-    width: 32px;
-    height: 32px;
-    -webkit-mask: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E  %3Cg fill-rule='evenodd' opacity='.9'%3E    %3Cpath d='M21.284 17.391l-4.324 4.323V8.63h-1.92v13.086l-4.324-4.325-1.358 1.357 4.831 4.83a2.54 2.54 0 0 0 1.81.75 2.54 2.54 0 0 0 1.812-.75l4.83-4.83-1.357-1.357z'/%3E    %3Cpath d='M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0m0 1.92c7.763 0 14.08 6.317 14.08 14.08S23.763 30.08 16 30.08 1.92 23.763 1.92 16 8.237 1.92 16 1.92'/%3E  %3C/g%3E%3C/svg%3E") no-repeat 50% 50%;
-    mask: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E  %3Cg fill-rule='evenodd' opacity='.9'%3E    %3Cpath d='M21.284 17.391l-4.324 4.323V8.63h-1.92v13.086l-4.324-4.325-1.358 1.357 4.831 4.83a2.54 2.54 0 0 0 1.81.75 2.54 2.54 0 0 0 1.812-.75l4.83-4.83-1.357-1.357z'/%3E    %3Cpath d='M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0m0 1.92c7.763 0 14.08 6.317 14.08 14.08S23.763 30.08 16 30.08 1.92 23.763 1.92 16 8.237 1.92 16 1.92'/%3E  %3C/g%3E%3C/svg%3E") no-repeat 50% 50%;
-    -webkit-mask-size: cover;
-    mask-size: cover;
-    background-color: currentColor;
-    margin-right: 8px
-  }
-
-  .download__btn:hover:after {
-    display: block;
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
-    background: rgba(0, 0, 0, .05)
-  }
-
-  .download__btn_primary {
-    background-color: #07c160;
-    color: #fff
-  }
-
-  .download__btn-bd {
-    white-space: nowrap
-  }
-
-  .download__btn-title {
-    font-size: 15px;
-    margin-bottom: 2px;
-    line-height: 18px
-  }
-
-  .download__btn-desc {
-    font-size: 12px;
-    line-height: 14px
-  }
-
   @media (min-width:1440px) {
     body {
       font-size: 20px
@@ -1229,10 +1182,6 @@
       margin-right: 0
     }
 
-    .banner__entry-extra-wrp {
-      padding-top: 30px
-    }
-
     .banner__update-log {
       width: 100%;
       box-sizing: border-box;
@@ -1244,6 +1193,11 @@
       right: 36px;
       width: auto
     }
+
+    .banner__entry-extra-wrp {
+      padding-top: 30px
+    }
+
 
     .links {
       padding: 40px 24px 72px

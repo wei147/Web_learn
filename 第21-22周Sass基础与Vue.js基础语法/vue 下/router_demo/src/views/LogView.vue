@@ -22,64 +22,25 @@
     <el-col :xs="12" :sm="16" :md="16" :lg="12" :xl="12" :pull="5">
       <div class="grid-content">
         <div class="source">
-          <div class="block">
-            <el-timeline class="timeline">
+          <el-timeline>
 
-              <el-timeline-item timestamp="2023/3/12" placement="top">
-                <router-link to="/log-detail">
-                  <el-card>
-                    <h4>新增 日志页面 element-ui实现</h4>
-                    <p>wei 提交于 2023/3/12 19:13</p>
-                  </el-card>
-                </router-link>
-              </el-timeline-item>
-
-              <el-timeline-item timestamp="2018/4/12" placement="top">
+            <template v-for="item in result.recordList" :key="item.flag">
+              <el-timeline-item :timestamp="item.roughTime" placement="top" :color='item.status'>
                 <el-card>
-                  <h4>更新 实现随机切换背景颜色</h4>
-                  <p>wei 提交于 2023/3/11 03:13</p>
+                  <h4>{{item.title}}</h4>
+                  <p>{{item.author}} 提交于 {{item.createTime}}</p>
                 </el-card>
               </el-timeline-item>
+            </template>
 
-              <el-timeline-item timestamp="2018/4/3" placement="top">
-                <el-card>
-                  <h4>新增 OCR文字识别web应用</h4>
-                  <p>wei 提交于 2023/3/09 02:03</p>
-                </el-card>
-              </el-timeline-item>
+            <el-timeline-item timestamp="2023/03/8" placement="top" color='#0bbd87'>
+              <el-card>
+                <h4>创建 初始网页首页</h4>
+                <p>wei 提交于 2023-03-08 10:46</p>
+              </el-card>
+            </el-timeline-item>
 
-              <el-timeline-item timestamp="2023/3/13" placement="top">
-                <el-card>
-                  <h4>更新 首页图标</h4>
-                  <p>wei 提交于 2023/3/12 20:44</p>
-                </el-card>
-              </el-timeline-item>
-
-              <el-timeline-item timestamp="2018/4/2" placement="top">
-                <el-card>
-                  <h4>更新 Github 模板</h4>
-                  <p>王小虎 提交于 2018/4/2 20:46</p>
-                </el-card>
-              </el-timeline-item>
-
-              <el-timeline-item timestamp="2023/3/13" placement="top">
-                <el-card>
-                  <h4>更新 首页图标</h4>
-                  <p>wei 提交于 2023/3/12 20:44</p>
-                </el-card>
-              </el-timeline-item>
-
-              <el-timeline-item timestamp="2018/4/2" placement="top">
-                <el-card>
-                  <h4>更新 Github 模板</h4>
-                  <p>王小虎 提交于 2018/4/2 20:46</p>
-                </el-card>
-              </el-timeline-item>
-              <el-backtop target=".timeline" :bottom="100" :visibility-height="200">
-                <div class="upFlag">UP</div>
-              </el-backtop>
-            </el-timeline>
-          </div>
+          </el-timeline>
         </div>
       </div>
     </el-col>
@@ -90,6 +51,12 @@
 
 </template>
 <script>
+  // import moment from 'moment'
+  import axios from 'axios'
+  import {
+    onMounted,
+    reactive
+  } from 'vue'
   export default {
     data() {
       return {
@@ -104,7 +71,32 @@
     }
   }
 </script>
-<style>
+
+<!-- 发送请求获取数据 -->
+<script setup>
+  let result = reactive({
+    recordList: []
+  });
+  onMounted(async () => {
+    console.log("hi hi ");
+    try {
+      axios.get('http://localhost:8001/record/getList', {})
+        .then(res => {
+          if (res.data.status == 10000 || res.data.data != null) {
+            result.recordList = res.data.data
+            console.log(result);
+          } else {
+            console.log("获取失败");
+          }
+        })
+    } catch (error) {
+      console.log("发生未知的错误");
+    }
+    return result
+  })
+</script>
+
+<style scoped>
   .flag {
     position: sticky;
     /* 新属性sticky */
