@@ -7,7 +7,7 @@
           <router-link to="/">首页</router-link>
         </el-menu-item>
         <el-menu-item index="3">
-          <router-link to="/log">生成二维码</router-link>
+          <router-link to="/log">日志记录</router-link>
         </el-menu-item>
         <el-menu-item index="1">OCR文字识别</el-menu-item>
       </el-menu>
@@ -117,10 +117,10 @@
         //文件信息中raw才是真的文件
         formData.append("file", this.fileList[0].raw);
         try {
-          axios.post('http://120.78.161.175:8081/getOcrText', formData, {
+          axios.post('http://120.78.161.175:8001/getOcrText', formData, {
             timeout: 8500 * 1
           }).then(res => {
-            // axios.post('http://localhost:8000/ocr/upload/file', formData).then(res => {
+            // axios.post('http://120.78.161.175:8000/ocr/upload/file', formData).then(res => {
             if (res.data.status == 10000 || res.data.data != null) {
               this.open2()
               this.text = res.data.data

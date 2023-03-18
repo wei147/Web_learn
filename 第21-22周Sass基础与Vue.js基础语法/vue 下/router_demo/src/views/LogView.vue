@@ -26,17 +26,19 @@
 
             <template v-for="item in result.recordList" :key="item.flag">
               <el-timeline-item :timestamp="item.roughTime" placement="top" :color='item.status'>
-                <el-card>
-                  <h4>{{item.title}}</h4>
-                  <p>{{item.author}} 提交于 {{item.createTime}}</p>
-                </el-card>
+                <router-link :to="'/log-detail/'+item.id">
+                  <el-card>
+                    <h4>{{item.title}}</h4>
+                    <p>{{item.author}} 提交于 {{item.createTime}}</p>
+                  </el-card>
+                  </router-link>
               </el-timeline-item>
             </template>
 
             <el-timeline-item timestamp="2023/03/8" placement="top" color='#0bbd87'>
               <el-card>
                 <h4>创建 初始网页首页</h4>
-                <p>wei 提交于 2023-03-08 10:46</p>
+                <p>wei 提交于 2023-03-09 11:46</p>
               </el-card>
             </el-timeline-item>
 
@@ -80,7 +82,7 @@
   onMounted(async () => {
     console.log("hi hi ");
     try {
-      axios.get('http://localhost:8001/record/getList', {})
+      axios.get('http://120.78.161.175:8001/record/getList', {})
         .then(res => {
           if (res.data.status == 10000 || res.data.data != null) {
             result.recordList = res.data.data

@@ -15,19 +15,19 @@
   <div class="pc">
     <div class="wrap">
       <div class=content>
-        <div class=faq_title> 新增 日志页面 element-ui实现</div>
+        <div class=faq_title> {{result.record.title}}</div>
         <!--style-->
-        <p>日期: 2023-03-12 </p>
+        <p>日期： {{dateFormat(result.record.createTime)}} </p>
         <div id=page_top class=page_top>
-          <p>作者： wei </p>
-          <p>可看到过往更新的内容、时间轴、导航栏置顶固定不动、发布作者等信息。</p>
+          <h4>作者： {{result.record.author}} </h4>
+          <p>{{result.record.detail}}</p>
         </div>
-        <div id=page_center>
+        <!-- <div id=page_center>
           <p class=page_center_title>该版本主要更新如下：</p>
           <h4>修复了一些已知问题。</h4>
           <p></p>
           <p><a href="" target=_blank>前往体验</a></p>
-        </div> <br />
+        </div> <br /> -->
       </div>
     </div>
     <!--script-->
@@ -36,6 +36,14 @@
 
 </template>
 <script>
+  import {
+    onMounted,
+    reactive
+  } from 'vue';
+  import {
+    useRoute
+  } from 'vue-router';
+  import axios from 'axios'
   export default {
     data() {
       return {
@@ -44,11 +52,53 @@
       };
     },
     methods: {
+      //时间格式化函数，此处仅针对yyyy-MM-dd hh:mm:ss 的格式进行格式化
+      dateFormat(time) {
+        var date = new Date(time);
+        var year = date.getFullYear();
+        /* 在日期格式中，月份是从0开始的，因此要加0
+         * 使用三元表达式在小于10的前面加0，以达到格式统一 如 09:11:05
+         * */
+        var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+        var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+        // var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+        // var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+        // var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+        // 拼接
+        // return year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+        return year + "-" + month + "-" + day;
+      },
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
       }
     }
   }
+</script>
+
+<script setup>
+  const $route = useRoute();
+  console.log("传过来的id是: " + $route.params.id);
+  let result = reactive({
+    record: []
+  });
+  // const Route = useRoute(); //获取到值
+  onMounted(async () => {
+    try {
+      axios.get('http://120.78.161.175:8001/record/select?id=' + $route.params.id, {})
+        .then(res => {
+          // console.log(res);
+          if (res.data.status == 10000 || res.data.data != null) {
+            result.record = res.data.data
+            console.log(result);
+          } else {
+            console.log("获取失败");
+          }
+        })
+    } catch (error) {
+      console.log("发生未知的错误");
+    }
+    return result
+  })
 </script>
 
 <style scoped>

@@ -22,7 +22,7 @@
               <div class=banner__update-log>
                 <ul class=banner__update-list>
                   <li v-for="item in result.topThree" :key="item.flag">
-                    <router-link class=banner__update-content to="/log-detail">
+                    <router-link class=banner__update-content :to="'/log-detail/'+item.id">
                       {{item.title}}</router-link>
                     <span class=banner__updata-time>{{item.time}}</span>
                   </li>
@@ -41,7 +41,7 @@
                       <span class=banner__updata-time>03-09</span>
                   </li> -->
                 </ul>
-                <router-link class=banner__update-more to="/log">一些公告</router-link>
+                <router-link class=banner__update-more to="/log">一些日志</router-link>
                 <!-- <a class=banner__update-more href="">一些公告</a> -->
               </div>
               <div class=banner__download>
@@ -50,11 +50,11 @@
                   <i class=icon-github></i>
                   <span>Github</span> </a>
 
-                <router-link class="banner__download-item" to="/store">
+                <router-link class="banner__download-item" to="/store" target=_blank>
                   <i class=icon-store></i>
                   <span>Store</span> </router-link>
 
-                <a class="banner__download-item" href="http://120.78.161.175/file/PsAndUi/index.html" target=_blank>
+                <a class="banner__download-item" href="http://120.78.161.175/flie/PsAndUi/index.html" target=_blank>
                   <i class=icon-windows></i>
                   <span>UI & PS</span> </a>
 
@@ -62,10 +62,10 @@
                                    <i class=icon-macos></i> <span>macOS</span> </a>
                                <a class="banner__download-item"
                                    href=https://filehelper.weixin.qq.com/ target=_blank> <i class=icon-transfer></i>
-                                   <span>文件传输助手<br>网页版</span> </a>  -->
+                                   <span>文件<br>版</span> </a>  -->
               </div>
               <div class=banner__entry-extra-wrp> <a
-                  href="http://120.78.161.175/file/%E9%99%84%E4%BB%B6%E7%AE%80%E5%8E%86-%E9%AD%8F%E5%9C%9F%E9%87%91-Java%E5%90%8E%E7%AB%AF-23%E5%B9%B4%E5%BA%94%E5%B1%8A%E7%94%9F.pdf"
+                  href="http://120.78.161.175/flie/%E9%99%84%E4%BB%B6%E7%AE%80%E5%8E%86-%E9%AD%8F%E5%9C%9F%E9%87%91-Java%E5%90%8E%E7%AB%AF-23%E5%B9%B4%E5%BA%94%E5%B1%8A%E7%94%9F.pdf"
                   target=_blank class="banner__entry-extra banner__entry-extra_watch">
                   <i class=icon-resume></i>我的简历 </a>
 
@@ -79,19 +79,18 @@
           </div>
           <div class=links>
             <ul class=links__list>
-              <li> <a href="" target=_blank> <i class=icon-wechat-pay></i> 电商项目 </a>
+              <li> <a href="http://120.78.161.175:8083/#/index" target=_blank> <i class=icon-mini-store></i> 电商项目 </a>
               </li>
-              <li> <a href="" target=_blank> <i class=icon-mp></i> 书评网 </a> </li>
+              <li> <a href="http://120.78.161.175:8082/" target=_blank> <i class=icon-book></i> 网上书店 </a> </li>
               <!-- <li> <a href="" target=_blank> <i class=icon-mini-program></i>OA系统 </a> </li>
               <li> <a href="" target=_blank> <i class=icon-finder></i> OA系统-后台 </a></li> -->
 
               <li>
                 <router-link to="/ocr" target=_blank> <i class=icon-mini-ocr></i> OCR文字识别 </router-link>
               </li>
-              <li> <a href="" target=_blank> <i class=icon-mini-store></i> 生成二维码 </a>
-              </li>
-              <!-- <li> <a href="" target=_blank> 其他 </a> </li> -->
-              <li> <a target=_blank> 个人文档 </a> </li>
+              <!-- <li> <a href="" target=_blank> <i class=icon-mini></i> 生成二维码 </a> </li>
+              <li> <a href="" target=_blank> 其他 </a> </li> -->
+              <li> <a href="http://120.78.161.175/flie/README.pdf" target=_blank> 个人文档 </a> </li>
             </ul>
           </div>
         </div>
@@ -138,13 +137,19 @@
     onMounted,
     reactive
   } from 'vue'
+
+  // import {
+  //   useRouter
+  // } from "vue-router"; //引入路由中组件
   export default {
     name: 'HomeView',
     data() {
       return {
         backgroundColor: "#2177b8",
-        colorList: ["#2177b8", "#22a2c3", "#2aae67", "#f07c82", "#7a7374", "#648e93"],
-        colorNameList: ["虹蓝", "海青", "微信绿", "香叶红", "锌灰", "晚波蓝"],
+        colorList: ["#2177b8", "#22a2c3", "#2aae67", "#f07c82", "#7a7374", "#3b818c", "#894e54", "#35333c", "#525288",
+          "#8b614d"
+        ],
+        colorNameList: ["虹蓝", "海青", "微信绿", "香叶红", "锌灰", "蜻蜓蓝", "烟红", "沙鱼灰", "野菊紫", "中红灰"],
         colorName: '虹蓝',
 
         currentNum: 0,
@@ -166,6 +171,18 @@
         console.log("颜色数组长度是: " + this.colorList.length);
         console.log("随机数是:" + num + "   颜色名字是: " + this.colorName + "  色值是: " + this.backgroundColor);
       },
+      //随机出现选中
+      // randomNum() {
+      //   let oldIndex, newIndex;
+      //   newIndex = Math.floor(Math.random() * 3);
+      //   if (newIndex === oldIndex) {
+      //     return randomNum()
+      //   } else {
+      //     oldIndex = newIndex;
+      //     return newIndex;
+      //   }
+      //   console.log(newIndex);
+      // }
     },
   }
 </script>
@@ -174,10 +191,11 @@
   let result = reactive({
     topThree: []
   });
+
   onMounted(async () => {
     console.log("hi hi ");
     try {
-      axios.get('http://localhost:8001/record/getTopThree', {})
+      axios.get('http://120.78.161.175:8001/record/getTopThree', {})
         .then(res => {
           // console.log(res);
           if (res.data.status == 10000 || res.data.data != null) {
@@ -406,11 +424,12 @@
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E  %3Cg fill='none'%3E    %3Cpath fill='%23FFF' d='M0 0h80v80H0z' opacity='0'/%3E    %3Cpath fill='%238385F3' d='M19.53 41.519L9.113 64.637c1.636 1.358 3.878 2.198 6.355 2.198.762 0 1.498-.088 2.205-.24.47-.1.931-.223 1.37-.382l.011-.002.016-.008a9.337 9.337 0 0 0 2.77-1.58c.896-.747 1.607-1.646 2.074-2.654l2.414-5.357-6.8-15.093z'/%3E    %3Cpath fill='%2307C160' d='M27.32 18.996c-.48-.998-1.208-1.888-2.127-2.628a9.647 9.647 0 0 0-2.838-1.564l-.017-.009-.01-.002a11.059 11.059 0 0 0-3.664-.616c-2.538 0-4.835.832-6.512 2.178l21.26 45.653c.478.998 1.236 1.896 2.154 2.636a9.655 9.655 0 0 0 2.839 1.564l.016.01h.011c1.125.396 2.362.617 3.664.617 2.537 0 4.835-.831 6.512-2.177L27.319 18.996z'/%3E    %3Cpath fill='%238385F3' d='M45.547 18.996c-.478-.998-1.208-1.888-2.126-2.628a9.647 9.647 0 0 0-2.839-1.564l-.016-.009-.01-.002a11.059 11.059 0 0 0-3.664-.616c-2.538 0-4.835.832-6.512 2.178l21.268 45.671c.479.998 1.228 1.878 2.146 2.618a9.655 9.655 0 0 0 2.839 1.564l.016.01h.011c1.125.396 2.362.617 3.663.617 2.538 0 4.836-.831 6.512-2.177L45.547 18.996z'/%3E    %3Cpath fill='%2307C160' d='M59.458 39.494l10.415-23.118c-1.636-1.358-3.878-2.199-6.354-2.199-.763 0-1.498.09-2.206.24-.47.1-.93.223-1.37.382l-.01.002-.017.009a9.323 9.323 0 0 0-2.77 1.58c-.895.747-1.607 1.645-2.074 2.653l-2.414 5.358 6.8 15.093z'/%3E  %3C/g%3E%3C/svg%3E")
   }
 
-  .icon-mp {
-    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E  %3Cg fill='none'%3E    %3Cpath fill='%23FFF' d='M0 0h80v80H0z' opacity='0'/%3E    %3Cpath fill='%2307C160' d='M60.962 22.753c-7.601-2.567-18.054-2.99-27.845 4.49-5.423 4.539-9.56 10.715-10.675 18.567-2.958-3.098-5.025-7.995-5.58-11.706-.806-5.403.483-10.82 4.311-15.45C26.906 11.724 34.577 10 39.6 10c9.57.001 18.022 5.882 21.363 12.753zm7.64 11.78c7.516 9.754 5.441 24.73-5.1 32.852-2.618 2.018-5.67 3.198-8.651 4.024a26.067 26.067 0 0 0 5.668-9.54c4.613-13.806-2.868-28.821-16.708-33.536-.3-.102-.601-.191-.903-.282 9.348-3.467 19.704-1.292 25.694 6.482zM39.572 59.37c6.403 0 11.474-1.49 16.264-5.013-.124 1.993-.723 4.392-1.271 5.805-4.509 11.633-17.56 16.676-31.238 12.183C11.433 68.438 4.145 54.492 7.475 42.851c.893-3.12 1.805-5.26 3.518-7.953 1.028 7.504 5.7 14.803 12.511 19.448.518.35.872.932.901 1.605a2.4 2.4 0 0 1-.08.653l-1.143 5.19c-.052.243-.142.499-.13.752.023.56.495.997 1.053.973.22-.01.395-.1.576-.215l6.463-4.143c.486-.312 1.007-.513 1.587-.538a3.03 3.03 0 0 1 .742.067c1.96.438 3.996.68 6.1.68z'/%3E  %3C/g%3E%3C/svg%3E")
+  .icon-book {
+    background-image: url("../assets/img/bookmark.png");
+    /* background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E  %3Cg fill='none'%3E    %3Cpath fill='%23FFF' d='M0 0h80v80H0z' opacity='0'/%3E    %3Cpath fill='%2307C160' d='M60.962 22.753c-7.601-2.567-18.054-2.99-27.845 4.49-5.423 4.539-9.56 10.715-10.675 18.567-2.958-3.098-5.025-7.995-5.58-11.706-.806-5.403.483-10.82 4.311-15.45C26.906 11.724 34.577 10 39.6 10c9.57.001 18.022 5.882 21.363 12.753zm7.64 11.78c7.516 9.754 5.441 24.73-5.1 32.852-2.618 2.018-5.67 3.198-8.651 4.024a26.067 26.067 0 0 0 5.668-9.54c4.613-13.806-2.868-28.821-16.708-33.536-.3-.102-.601-.191-.903-.282 9.348-3.467 19.704-1.292 25.694 6.482zM39.572 59.37c6.403 0 11.474-1.49 16.264-5.013-.124 1.993-.723 4.392-1.271 5.805-4.509 11.633-17.56 16.676-31.238 12.183C11.433 68.438 4.145 54.492 7.475 42.851c.893-3.12 1.805-5.26 3.518-7.953 1.028 7.504 5.7 14.803 12.511 19.448.518.35.872.932.901 1.605a2.4 2.4 0 0 1-.08.653l-1.143 5.19c-.052.243-.142.499-.13.752.023.56.495.997 1.053.973.22-.01.395-.1.576-.215l6.463-4.143c.486-.312 1.007-.513 1.587-.538a3.03 3.03 0 0 1 .742.067c1.96.438 3.996.68 6.1.68z'/%3E  %3C/g%3E%3C/svg%3E") */
   }
 
-  .icon-mp,
+  .icon-book,
   .icon-wedesign {
     display: inline-block;
     vertical-align: middle;
