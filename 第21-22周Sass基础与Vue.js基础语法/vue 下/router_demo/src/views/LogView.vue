@@ -11,6 +11,9 @@
         <router-link to="/log">日志记录</router-link>
       </el-menu-item>
       <el-menu-item index="3" disabled>日志详情</el-menu-item>
+      <el-menu-item index="4">
+        <a href="http://120.78.161.175/flie/README.pdf">个人文档</a>
+      </el-menu-item>
     </el-menu>
   </div>
   <!-- 内容区 -->
@@ -31,7 +34,7 @@
                     <h4>{{item.title}}</h4>
                     <p>{{item.author}} 提交于 {{item.createTime}}</p>
                   </el-card>
-                  </router-link>
+                </router-link>
               </el-timeline-item>
             </template>
 

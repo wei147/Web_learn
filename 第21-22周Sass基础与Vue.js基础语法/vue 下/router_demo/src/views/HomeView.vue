@@ -70,7 +70,7 @@
                   <i class=icon-resume></i>我的简历 </a>
 
                 <a @click="centerDialogVisible = true" class="banner__entry-extra ">
-                  <i class=icon-attestation></i>学籍认证报告
+                  <i class=icon-attestation></i>学籍认证
                 </a>
               </div>
             </div>
@@ -103,7 +103,7 @@
   </div>
 
   <!-- 利用对话框展示专科和本科的学信网在线验证报告 -->
-  <el-dialog title="关于我的两份学籍在线认证" v-model="centerDialogVisible" width="24%">
+  <el-dialog title="我的两份学籍在线认证" v-model="centerDialogVisible" width="40%">
     <span></span>
     <br>
     <a href="https://www.chsi.com.cn/xlcx/bg.do?vcode=A0SK8QEDSJZVCYXH" target=_blank>
@@ -214,7 +214,7 @@
 
 
 <!-- /* 避免样式污染  */ -->
-<style scoped>
+<style>
   .banner__update-log {
     padding: 24px 0 0;
     width: 440px;
