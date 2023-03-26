@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson 34-compositionAPI</title>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+</head>
+
+<body>
+    <div id="wei">
+    </div>
+    <div id="hello">
+    </div>
+</body>
+
+<script>
+    // compositionAPI  代码维护性的问题 提高维护性
+    const app = Vue.createApp({
+        data() {
+        },
+
+        methods: {
+            test() {
+                // 看看组件上面都挂载了什么
+                console.log(this.$options.setup());
+            }
+        },
+        mounted() {
+            this.test();
+        },
+
+        template: `
+        <div @click="handleClick">name: {{name}}</div>
+            `,
+        // created 实例被完全初始化之前 props为外部传过来的属性。 context是上下文
+        // 会直接暴露在外部,外边的template可以直接使用
+        // setup 没法调用外部的方法。拿不到app实例
+        // setup 是compositionAPI最核心的东西
+        setup(props,context) {
+            // this.test(); 调用不了
+            // setup return的所有内容会暴露到外部 (我们在template模板中可以直接去使用)
+            return{
+                name:'yang',
+                handleClick:()=>{
+                    alert("hi")
+                }
+            }
+        }
+    });
+    const vm = app.mount("#wei");
+</script>
+
+</html>
