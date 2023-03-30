@@ -1,0 +1,67 @@
+# TypeScript 基础入门+语法进阶+高级语法
+
+## 基础入门
+
+### 开篇
+
+```
+2012年由微软正式发布
+```
+
+<img src="C:\Users\w1216\AppData\Roaming\Typora\typora-user-images\image-20230330034459499.png" alt="image-20230330034459499" style="zoom:30%;" />
+
+<hr>
+
+<img src="C:\Users\w1216\AppData\Roaming\Typora\typora-user-images\image-20230330034556144.png" alt="image-20230330034556144" style="zoom:50%;" />
+
+<hr>
+
+<img src="C:\Users\w1216\AppData\Roaming\Typora\typora-user-images\image-20230330034808973.png" alt="image-20230330034808973" style="zoom:30%;" />
+
+<hr>
+
+<img src="C:\Users\w1216\AppData\Roaming\Typora\typora-user-images\image-20230330034845125.png" alt="image-20230330034845125" style="zoom:30%;" />
+
+```
+TS比JS更加完善
+```
+
+<img src="C:\Users\w1216\AppData\Roaming\Typora\typora-user-images\image-20230330035305459.png" alt="image-20230330035305459" style="zoom:33%;" />
+
+<hr>
+
+<img src="C:\Users\w1216\AppData\Roaming\Typora\typora-user-images\image-20230330035342555.png" alt="image-20230330035342555" style="zoom:30%;" />
+
+#### TypeScript的定义
+
+```
+是JavaScript的超集
+静态的类型
+TypeScript会被编译成普通的JavaScript
+```
+
+```typescript
+//typescript 代码
+interface Person{
+    name:string}
+
+const teacher: Person = {
+    name:'wei'}
+```
+
+```javascript
+// 编译时会转变成 JavaScript代码
+var teacher = {
+    name: 'wei'
+};
+```
+
+
+
+#### TypeScript带来了什么优势
+
+```
+相当于JavaScript更好的点是什么? 
+git.imooc.com
+```
+

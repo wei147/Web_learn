@@ -26,7 +26,8 @@
     // ref、reactive 响应式的引用
     const app = Vue.createApp({
         template: `
-        <div>name: {{name1}}</div>
+        <div>tag: {{tag}}</div>
+        <div>name: {{age}}</div>
         <h2>{{name}}</h2>
             `,
         // <div>name: {{nameObj.name}}</div>
@@ -40,13 +41,14 @@
             // 通过proxy,把 对象{name:'chen'} 变成 proxy({name:'chen'}) 响应式引用 (proxy就是一种双向绑定)
             let name = ref("李白")
             const nameObj = reactive({
-                name: '小小骑士阿木木',
+                tag: '小小骑士阿木木',
                 age: 21
             }); //也可以是数组
             //通过readonly对响应式引用做一个处理之后返回的对象是不可以被修改的
             const copyNameObj = readonly(nameObj);
             setTimeout(() => {
-                nameObj.name = 'chen',
+                nameObj.tag = 'chen',
+                    nameObj.age = 21 + 6,
                     name.value = '诗仙'
                 // copyNameObj[0] = 10086
             }, 2000);
@@ -55,10 +57,13 @@
             //   age:proxy({value:23})
             //}
             const {
-                age
+                age,
+                tag
             } = toRefs(nameObj);
+            //这里要同名才能拿到 ?
             console.log(age);
             return {
+                tag,
                 age,
                 name,
                 copyNameObj
