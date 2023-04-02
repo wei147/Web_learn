@@ -112,7 +112,23 @@ TypeScript要有node运行环境
 
 #### 静态类型的深度理解
 
-```
+```typescript
+tpye的深度的本质性的理解
 
+
+interface Point {
+  x: number;
+  y: number;
+}
+
+// 自定义类型
+/**
+ * 我们看到一个变量它是一个静态类型,不仅仅意味着这个变量的类型不能修改,
+ * 还意味着这个变量的属性和方法基本也就确定了,,
+ */
+const point: Point = {
+  x: 8,
+  y: 7,
+};
 ```
 
