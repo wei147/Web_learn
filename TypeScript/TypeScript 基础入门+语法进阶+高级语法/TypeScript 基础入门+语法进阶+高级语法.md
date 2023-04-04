@@ -188,3 +188,68 @@ const total = getThisTotal(8, 9);
 
 ```
 
+
+
+#### 函数相关类型
+
+```typescript
+//也可以在指定函数的返回值类型
+function add(first: number, second: number): number {
+  return first + second;
+}
+
+//没有返回值
+function sayHi(): void {
+  console.log('hi');
+}
+
+function errEmitter(): never {
+  throw new Error('错误');
+}
+
+function addPro({ first, second }: { first: number; second: number }): number {
+  return first + second + 2;
+}
+
+function getNumber({ first }: { first: number }): number {
+  return first;
+}
+
+const numTotal = add(2, 7);
+const num = getNumber({ first: 19 });
+```
+
+
+
+#### 基础语法复习
+
+```typescript
+
+//对象类型 {},Class, function,[]
+const func = (str:string)=>{
+  return parseInt(str,9);
+}
+
+const func1:(str:string)=>number = (str)=>{
+  return parseInt(str,8);
+}
+
+interface Person{
+  name:'string',
+  age:number
+}
+
+const rawDate = '{"name":"yang","age":22}';
+const newData:Person = JSON.parse(rawDate)
+
+//直接让数字变字符串 报错
+let temp = 123;
+temp = '789';
+
+//有可能是number 也有可能是string
+let temp1:number | string = 123;
+temp1 = '789';
+```
+
+#### 数组和元组
+
