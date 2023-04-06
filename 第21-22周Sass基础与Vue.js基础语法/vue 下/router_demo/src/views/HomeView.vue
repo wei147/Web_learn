@@ -79,15 +79,19 @@
           </div>
           <div class=links>
             <ul class=links__list>
-              <li> <a href="http://120.78.161.175:8083/#/index" target=_blank> <i class=icon-mini-store></i> 电商项目 </a>
+              <li @click="open">
+                <a> <i class=icon-mini-store></i> 电商项目 </a>
+                <!-- <a href="http://120.78.161.175:8083/#/index" target=_blank> <i class=icon-mini-store></i> 电商项目 </a> -->
               </li>
               <li> <a href="http://120.78.161.175:8082/" target=_blank> <i class=icon-book></i> 网上书店 </a> </li>
-              <!-- <li> <a href="" target=_blank> <i class=icon-mini-program></i>OA系统 </a> </li>
-              <li> <a href="" target=_blank> <i class=icon-finder></i> OA系统-后台 </a></li> -->
+              <!-- <li> <a href="" target=_blank> <i class=icon-mini-program></i>OA系统 </a> </li>-->
+              <!-- <li> <a href="http://120.78.161.175:81/index" target=_blank> <i class=icon-finder></i> OA系统 </a></li> -->
+              <li> <a href="http://120.78.161.175:81/index" target=_blank> <i class=icon-finder></i> OA系统 </a></li>
 
               <li>
                 <router-link to="/ocr" target=_blank> <i class=icon-mini-ocr></i> OCR文字识别 </router-link>
               </li>
+
               <!-- <li> <a href="" target=_blank> <i class=icon-mini></i> 生成二维码 </a> </li>
               <li> <a href="" target=_blank> 其他 </a> </li> -->
               <li> <a href="http://120.78.161.175/flie/README.pdf" target=_blank> 个人文档 </a> </li>
@@ -121,6 +125,9 @@
       </el-button>
     </a>
   </el-dialog>
+
+  <!-- 维护弹框 -->
+  <!-- <el-button type="text" @click="open"></el-button> -->
 </template>
 
 <script>
@@ -183,6 +190,19 @@
       //   }
       //   console.log(newIndex);
       // }
+
+      // 维护信息
+      open() {
+        this.$alert('暂不开放,维护中...', '提示', {
+          confirmButtonText: '确定',
+          // callback: action => {
+          //   this.$message({
+          //     type: 'info',
+          //     message: `action: ${ action }`
+          //   });
+          // }
+        });
+      }
     },
   }
 </script>
@@ -359,7 +379,7 @@
   }
 
   .icon-mini-ocr,
-  .icon-mini-program {
+  .icon-mini-oa {
     display: inline-block;
     vertical-align: middle;
     width: 40px;
@@ -367,9 +387,15 @@
     background-size: cover
   }
 
+
   .icon-mini-ocr {
     margin-left: 3px;
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E  %3Cg fill='none' fill-rule='evenodd'%3E    %3Cpath fill='%23FFF' d='M0 40h39.851V0H0z' opacity='0'/%3E    %3Cpath fill='%23FA9D3B' d='M25.386 20.626c-1.204 2.243-4.363 2.89-7.055 1.446-2.692-1.445-3.899-4.435-2.695-6.679 1.204-2.244 4.363-2.891 7.055-1.446 2.693 1.445 3.9 4.435 2.695 6.679m.421-8.263C19.493 6.626 10.334 6.42 5.35 11.904c-4.985 5.485-3.907 14.583 2.406 20.32 6.314 5.739 15.473 5.944 20.458.46 4.984-5.485 3.907-14.583-2.407-20.32M31.56 3.46c2.463-.645 5.087 1.23 5.86 4.186.773 2.956-.597 5.875-3.061 6.52-2.463.643-5.087-1.23-5.86-4.187-.773-2.956.597-5.875 3.06-6.52'/%3E  %3C/g%3E%3C/svg%3E")
+  }
+
+  .icon-mini-oa {
+    margin-left: 3px;
+    background-image: url("../assets/img/folder.png")
   }
 
   .icon-mini-store {
@@ -494,7 +520,8 @@
   }
 
   .icon-finder {
-    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E  %3Cg fill='none' fill-rule='evenodd'%3E    %3Cpath fill='%23FFF' d='M0 0h40v40H0z' opacity='0'/%3E    %3Cpath fill='%23FA9D3B' d='M32.99 5.676c.784.06 2.228.47 3.092 2.559 1.191 2.88.296 8.516-.344 11.619-.966 4.685-2.522 9.352-3.964 11.889-.96 1.687-1.918 2.548-3.016 2.708a3.703 3.703 0 0 1-.535.039c-3.247 0-6.338-4.24-8.223-7.47-1.885 3.23-4.977 7.47-8.223 7.47a3.69 3.69 0 0 1-.534-.039c-1.1-.16-2.058-1.02-3.017-2.708-1.442-2.537-2.998-7.204-3.964-11.89-.64-3.102-1.535-8.737-.344-11.618.864-2.089 2.308-2.5 3.092-2.559 2.913-.216 6.377 3.365 11.564 11.976.525.87 1.009 1.68 1.426 2.38.42-.704.904-1.514 1.426-2.38C26.612 9.043 30.06 5.458 32.989 5.676zM7.13 9.471l-.04.076-.049.13c-.636 1.825-.171 6.682 1.154 11.951 1.274 5.064 2.654 7.922 3.373 9.007a.63.63 0 0 0 .824.213c.634-.339 1.739-1.227 3.335-3.549 1-1.455 1.828-2.948 2.305-3.855a633.97 633.97 0 0 0-2.4-4.02c-4.51-7.488-6.896-9.545-7.856-10.11a.478.478 0 0 0-.646.157zm25.775.068a.462.462 0 0 0-.675-.23c-.952.558-3.34 2.604-7.863 10.115a629.316 629.316 0 0 0-2.406 4.028c1.93 3.76 4.149 6.497 5.499 7.336a.741.741 0 0 0 1.017-.221c.727-1.13 2.077-3.975 3.326-8.939 1.359-5.4 1.813-10.369 1.105-12.08z'/%3E  %3C/g%3E%3C/svg%3E")
+    /* background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E  %3Cg fill='none' fill-rule='evenodd'%3E    %3Cpath fill='%23FFF' d='M0 0h40v40H0z' opacity='0'/%3E    %3Cpath fill='%23FA9D3B' d='M32.99 5.676c.784.06 2.228.47 3.092 2.559 1.191 2.88.296 8.516-.344 11.619-.966 4.685-2.522 9.352-3.964 11.889-.96 1.687-1.918 2.548-3.016 2.708a3.703 3.703 0 0 1-.535.039c-3.247 0-6.338-4.24-8.223-7.47-1.885 3.23-4.977 7.47-8.223 7.47a3.69 3.69 0 0 1-.534-.039c-1.1-.16-2.058-1.02-3.017-2.708-1.442-2.537-2.998-7.204-3.964-11.89-.64-3.102-1.535-8.737-.344-11.618.864-2.089 2.308-2.5 3.092-2.559 2.913-.216 6.377 3.365 11.564 11.976.525.87 1.009 1.68 1.426 2.38.42-.704.904-1.514 1.426-2.38C26.612 9.043 30.06 5.458 32.989 5.676zM7.13 9.471l-.04.076-.049.13c-.636 1.825-.171 6.682 1.154 11.951 1.274 5.064 2.654 7.922 3.373 9.007a.63.63 0 0 0 .824.213c.634-.339 1.739-1.227 3.335-3.549 1-1.455 1.828-2.948 2.305-3.855a633.97 633.97 0 0 0-2.4-4.02c-4.51-7.488-6.896-9.545-7.856-10.11a.478.478 0 0 0-.646.157zm25.775.068a.462.462 0 0 0-.675-.23c-.952.558-3.34 2.604-7.863 10.115a629.316 629.316 0 0 0-2.406 4.028c1.93 3.76 4.149 6.497 5.499 7.336a.741.741 0 0 0 1.017-.221c.727-1.13 2.077-3.975 3.326-8.939 1.359-5.4 1.813-10.369 1.105-12.08z'/%3E  %3C/g%3E%3C/svg%3E") */
+    background-image: url("../assets/img/folder.png")
   }
 
   * {
