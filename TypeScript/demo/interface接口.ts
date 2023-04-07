@@ -8,8 +8,13 @@ interface Person {
   say();
 }
 
-interface Teacher extends Person{
-  teach():string;
+interface Teacher extends Person {
+  teach(): string;
+}
+
+interface SayHi {
+  // word类型是string。返回值类型也是string
+  (word: string): string;
 }
 
 //type 定义的类型和 interface 定义的有什么不一样  type定义的可以直接代表基础类型
@@ -29,6 +34,9 @@ const person = {
   say() {
     console.log('hi');
   },
+  teach(){
+    return 'hei'
+  }
 };
 
 getPersonName(person);
@@ -40,3 +48,7 @@ class User implements Person {
     return 'hi';
   }
 }
+
+const say: SayHi = (word: string) => {
+  return word;
+};

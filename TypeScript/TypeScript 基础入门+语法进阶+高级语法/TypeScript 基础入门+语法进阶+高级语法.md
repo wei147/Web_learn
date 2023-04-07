@@ -268,15 +268,93 @@ const teacherList: [string, string, number][] = [
 #### interface接口
 
 ```typescript
+// age? 代表可有有无  readonly代表只读,不能修改
+// [propName:string]:any  属性名字是string类型。但是属性值可以是任何类型
 interface Person {
+  // readonly name: string;
   name: string;
+  age?: number;
+  [propName: string]: any;
+  say();
 }
 
-// const getPersonName = (person:{name:string})=>{
-const getPersonName = (person: Person) => {};
+interface Teacher extends Person {
+  teach(): string;
+}
 
-const setPersonName = (person: Person, name:string) => {
+interface SayHi {
+  // word类型是string。返回值类型也是string
+  (word: string): string;
+}
+
+//type 定义的类型和 interface 定义的有什么不一样  type定义的可以直接代表基础类型
+type Person1 = string;
+// const getPersonName = (person:{name:string})=>{
+const getPersonName = (person: Person): void => {};
+
+const setPersonName = (person: Teacher, name: string): void => {
   person.name = name;
 };
+
+const person = {
+  name: 'Lihua',
+  age: 25,
+  // 虽然多了一个属性传给函数但是并不会报错。直接写在函数上会报错
+  sex: 'male',
+  say() {
+    console.log('hi');
+  },
+  teach(){
+    return 'hei'
+  }
+};
+
+getPersonName(person);
+setPersonName(person, 'ya');
+
+class User implements Person {
+  name;
+  say() {
+    return 'hi';
+  }}
+
+const say: SayHi = (word: string) => {
+  return word;
+};
+```
+
+
+
+#### 类的定义与继承
+
+ts-node .\类的定义与继承.ts   运行指令
+
+```typescript
+class Person {
+  name = 'wei';
+  getName() {
+    return this.name;
+  }
+}
+
+class Teacher extends Person {
+  getName() {
+    // return this.name+ '我是老师';
+    /* super.getName() 这里直接调用父类的方法。子类把父类方法覆盖/重写之后,
+    如果我们还想调用父类的方法可以通过super调用*/
+    return super.getName() + ', I am teacher';
+  }
+  teach() {
+    return 'good good study';
+  }
+}
+
+// const person_man = new Person();
+// console.log(person_man.getName());
+
+const teacher = new Teacher();
+console.log(teacher.getName());
+
+console.log(teacher.teach());
 ```
 
