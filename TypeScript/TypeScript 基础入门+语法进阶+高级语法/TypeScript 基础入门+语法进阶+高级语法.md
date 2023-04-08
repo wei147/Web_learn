@@ -358,3 +358,7 @@ console.log(teacher.getName());
 console.log(teacher.teach());
 ```
 
+
+
+#### 类中的访问类型和构造器
+
