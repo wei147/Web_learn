@@ -362,3 +362,91 @@ console.log(teacher.teach());
 
 #### 类中的访问类型和构造器
 
+```typescript
+// public 允许在类内外被调用
+// private 允许在类内被使用
+// protected 允许在类内及继承的子类中使用
+
+//constructor
+class Person {
+  // 传统写法
+  // public name:string;
+  //constructor在 new实例的时候执行
+  // constructor(name:String) {
+  //   this.name = name;
+  // }
+
+  // 简写
+  constructor(public name: string) {}
+}
+
+class Teacher extends Person {
+  constructor(public age: number) {
+    // 这里的super是把'chen' 传到上面的Person构造器的name中
+    // 一个子类继承父类,自雷要有构造器的话,那么它必须要调用super()方法 (也调用父类的构造器)
+    super('chen');
+  }
+}
+
+const person = new Person('wei');
+
+const teacher = new Teacher(28);
+console.log(person.name);
+console.log(teacher.name);
+console.log(teacher.age);
+
+```
+
+
+
+#### 静态属性,Setter和Getter
+
+```typescript
+// getter and setter
+class Person1 {
+  //  _name 这种加下划线的写法是私有属性
+  constructor(private _name: string) {}
+  get name() {
+    return this._name;
+  }
+  set name(name: string) {
+    this._name = name;
+  }}
+
+const person1 = new Person1('wei');
+console.log(person1.name);
+person1.name = 'LiHua';
+console.log(person1.name);
+// Person 构造器里面_name是用private修饰的,所以不能直接  person1._name 拿到
+// person1._name
+
+// 单例模式  (限制Demo只能生成一个实例)
+class Demo {
+  //
+  private static instance: Demo;
+  private constructor(public name:string) {}
+
+  // static 是指把这个方法直接挂载到类上,而不是类的实例上
+  static getInstance() {
+    /*调用 getInstance()方法的时候,如果instance为空的话则创建一个Demo,
+    下次在调用这个getInstance()方法的时候,instance里面已经有Demo了,直接return即可。单例模式  */
+    if (!this.instance) {
+      this.instance = new Demo('王小虎');
+    }
+    return this.instance;
+  }}
+
+const demo1 = Demo.getInstance();
+const demo2 = Demo.getInstance();
+console.log(demo1.name);
+console.log(demo2.name);
+
+// constructor 被private修饰的时候,下面的实例化便无法进行
+// const demo1 = new Demo();
+// const demo1 = new Demo();
+```
+
+
+
+#### 抽象类
+
