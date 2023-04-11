@@ -79,7 +79,7 @@
               <strong>一款 Markdown 编辑器和阅读器</strong>
             </a>
 
-            <a class="item-top item-1" href="www.voidtools.com/zh-cn/">
+            <a class="item-top item-1" href="https://www.voidtools.com/zh-cn/">
               <h4>Everything</h4>
               <img class="codeicon codeicon-36" alt="html5" height="36" width="36"
                 src="../assets/img/store/software/Everything.jpg">
@@ -101,7 +101,7 @@
               <strong>桌面快速预览工具,开源、免费</strong>
             </a>
 
-            <a class="item-top item-1" href="www.bandisoft.com">
+            <a class="item-top item-1" href="https://www.bandisoft.com">
               <h4>Bandizip</h4>
               <img class="codeicon codeicon-36" alt="css" height="36" width="36"
                 src="../assets/img/store/software/Bandizip.jpg">
@@ -196,7 +196,7 @@
             <h2><i class="fa fa-list"></i> 特色网站</h2>
 
 
-            <a class="item-top item-1" href="www.iconfont.cn">
+            <a class="item-top item-1" href="https://www.iconfont.cn">
               <h4>iconfont</h4>
               <img class="codeicon codeicon-36" alt="iconfont" height="36" width="36"
                 src="../assets/img/store/website/iconfont.png">
@@ -209,7 +209,7 @@
               <strong>中国传统颜色</strong>
             </a>
 
-            <a class="item-top item-1" href="wallhaven.cc/">
+            <a class="item-top item-1" href="https://wallhaven.cc/">
               <h4>wallhaven</h4>
               <img class="codeicon codeicon-36" alt="wallhaven" height="36" width="36"
                 src="../assets/img/store/website/wallhaven.png">
