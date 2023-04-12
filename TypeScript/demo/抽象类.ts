@@ -37,12 +37,38 @@ class Triangle {
   getArea() {}
 }
 
-
 //抽象类是把通用的类抽象起来
 //接口是 也是把通用性的东西封装起来 吗? 也许可以换一下说法
 
-interface Person1{
-  name:string;
+interface Person1 {
+  name: string;
 }
 
-interface
+interface Teacher extends Person1 {
+  teachingAge: number;
+}
+
+interface Student extends Person1 {
+  age: number;
+}
+
+interface Driver extends Person1 {
+  caringAge: number;
+}
+
+const getUserInfo = (user: Person1) => {
+  console.log(user.name);
+};
+
+const teacher = {
+  name: 'Li',
+  teachingAge: 4,
+};
+
+const student = {
+  name: 'xiaoYa',
+  age: 21,
+};
+
+getUserInfo(teacher);
+getUserInfo(student);
