@@ -525,6 +525,35 @@ const student = {
 
 getUserInfo(teacher);
 getUserInfo(student);
+```
 
+
+
+### 编写ts-spider
+
+#### 开始
+
+```bash
+npm init -y   //生成一个package.json
+tsc --init    // tsconfig.json
+npm install -D ts-node  // 生成 node_modules 文件夹  -D是指安装到本地的工程里面?
+
+npm run dev  // 跑package.json里面的一个脚本(scripts)
+npm install -D typescript  //上一条指令不可以的话,要在工程文件这里安装ts
+
+npm i superagent  // 用于获取网页信息
+
+
+# 注:npm 5.0.0 之前，有 --save 参数才会把模块写入到 packages.json。现在已经是内置参数，不用额外写了
+npm i             就是npm install 简写
+npm i xxx -D      就是 npm i xxx --save-dev
+npm i xxx -S      就是 npm i xxx --save
+npm i xxx -g      就是 全局安装
+npm i xxx         就是 npm i xxx --save
+
+# 命令参数详解
+npm i xxx --save-dev 是把依赖写入进devDependencies对象里面
+npm i xxx --save 是把依赖写入进dependencies对象里面
+npm i xxx -g 就是安装到全局下，在命令行的任何地方都可以操作，不会提示“命令不存在等错误”
 ```
 
