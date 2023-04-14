@@ -16,6 +16,8 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
+    "@types/cheerio": "^0.22.31",
+    "cheerio": "^1.0.0-rc.12",
     "superagent": "^8.0.9"
   }
 }
